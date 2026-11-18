@@ -207,6 +207,76 @@
     @media (prefers-reduced-motion: reduce) {
       .sheet, .sheet-curl, .sheet-shadow, .progress-bar, .press-roll, .front { animation: none !important; transition: none !important; }
     }
+    .thief-scene {
+      width: 200px;
+      max-width: 72%;
+      margin: 6px auto 2px;
+      flex: 0 0 auto;
+    }
+    .thief-scene svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+    .thief-runner {
+      transform-box: view-box;
+      transform-origin: 50% 90%;
+      animation: thief-bob 0.42s ease-in-out infinite;
+    }
+    .thief-leg-front, .thief-leg-back {
+      transform-box: view-box;
+      transform-origin: 46.4% 68.4%;
+    }
+    .thief-leg-front { animation: thief-stride-a 0.42s ease-in-out infinite; }
+    .thief-leg-back { animation: thief-stride-b 0.42s ease-in-out infinite; }
+    .thief-sack {
+      transform-box: view-box;
+      transform-origin: 36% 52%;
+      animation: thief-sack 0.42s ease-in-out infinite;
+    }
+    .thief-hour, .thief-minute {
+      transform-box: view-box;
+      transform-origin: 73.2% 61.6%;
+    }
+    .thief-hour { animation: thief-spin 8s linear infinite; }
+    .thief-minute { animation: thief-spin 1.5s linear infinite; }
+    .thief-dust {
+      animation: thief-dust 0.42s ease-in-out infinite;
+    }
+    @keyframes thief-bob {
+      0%, 100% { transform: translate(0, 0) rotate(-6deg); }
+      50% { transform: translate(2px, -7px) rotate(-9deg); }
+    }
+    @keyframes thief-stride-a {
+      0%, 100% { transform: rotate(30deg); }
+      50% { transform: rotate(-28deg); }
+    }
+    @keyframes thief-stride-b {
+      0%, 100% { transform: rotate(-26deg); }
+      50% { transform: rotate(32deg); }
+    }
+    @keyframes thief-sack {
+      0%, 100% { transform: rotate(-8deg); }
+      50% { transform: rotate(-20deg); }
+    }
+    @keyframes thief-spin { to { transform: rotate(360deg); } }
+    @keyframes thief-dust {
+      0%, 100% { opacity: 0.15; transform: translate(0, 0) scale(1); }
+      50% { opacity: 0.4; transform: translate(-4px, 2px) scale(1.08); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .thief-runner, .thief-leg-front, .thief-leg-back, .thief-sack, .thief-hour, .thief-minute, .thief-dust {
+        animation: none !important;
+      }
+      .thief-runner { transform: translate(0, -2px) rotate(-7deg); }
+      .thief-leg-front { transform: rotate(28deg); }
+      .thief-leg-back { transform: rotate(-24deg); }
+      .thief-sack { transform: rotate(-14deg); }
+      .thief-hour { transform: rotate(50deg); }
+      .thief-minute { transform: rotate(220deg); }
+      .thief-dust { opacity: 0.25; }
+    }
     .kicker {
       color: var(--spot);
       font-weight: 700;
@@ -1619,18 +1689,17 @@
         { kind: "intro" },
         { kind: "department", stage: "א", title: "באיזו מחלקה או צוות אתם עובדים?" },
         { kind: "multi", key: "load_days", stage: "א", title: "באילו ימים העומס אצלך הכי גבוה?", hint: "אפשר לבחור יותר מיום אחד. אם העומס אחיד — בחרו רק את האפשרות האחרונה.", options: LOAD_DAYS, exclusive: EVEN_LOAD },
-        { kind: "interstitial", text: "הכתבה מתחילה להתהוות. עכשיו נעבור לכלים." },
         { kind: "multi", key: "ai_tools", stage: "ב", title: "באילו כלי AI כבר השתמשתם, בעבודה או מחוצה לה?", hint: "אפשר כמה תשובות. אם עדיין לא התנסיתם — בחרו רק את האפשרות האחרונה.", options: AI_TOOLS, exclusive: NO_AI },
         { kind: "single", key: "ai_frequency", stage: "ב", title: "באיזו תדירות אתם משתמשים בכלי AI בעבודה?", options: FREQ },
         { kind: "scale", key: "ai_skill", stage: "ב", title: "עד כמה אתם מרגישים בנוח להשתמש ב-AI בעבודה?", low: "בכלל לא", high: "בביטחון מלא" },
         { kind: "multi", key: "software", stage: "ב", title: "באילו תוכנות אתם עובדים באופן קבוע?", hint: group ? "סידרנו בראש את הכלים שלרוב רלוונטיים למה שכתבתם. אפשר לבחור מכל הרשימה, כולל אחר." : "רשימה כללית. אפשר לבחור כמה, כולל אחר.", options: orderOptions(SOFTWARE, group, SOFT_PREF), prefMap: SOFT_PREF, otherKey: "software_other" },
-        { kind: "interstitial", text: "מעולה. החלק הבא הוא הכי חשוב: מה גונב לך את הזמן." },
+        { kind: "interstitial", text: "מעולה. החלק הבא הוא הכי חשוב: מה גונב לך את הזמן.", art: "thief" },
         { kind: "ranked", key: "tasks", stage: "ג", title: "מהן שלוש המשימות שגוזלות לכם הכי הרבה זמן בשבוע רגיל?", hint: "בחרו עד שלוש, לפי הסדר: הראשונה היא זו שגוזלת הכי הרבה. הרשימה כללית; בראש מופיעות הצעות לפי מה שציינתם.", options: orderOptions(TASKS, group, TASK_PREF), max: 3, min: 1, prefMap: TASK_PREF, otherKey: "tasks_other" },
         { kind: "single", key: "weekly_hours", stage: "ג", title: "כמה שעות בשבוע הולכות על המשימה שסימנתם ראשונה?", options: HOURS },
         { kind: "single", key: "bottleneck", stage: "ג", title: "באיזה שלב העבודה בדרך כלל נתקעת?", options: BOTTLENECKS },
         { kind: "text", key: "diagnostic", stage: "ג", title: "איפה העבודה שלך נתקעת יותר מכל בשבוע רגיל?", hint: "משפט או שניים. עד 200 תווים.", max: 200, required: true, placeholder: "למשל: מחכה לחומר ברגע האחרון, ואז הכול מתרכז ביום רביעי..." },
         { kind: "text", key: "eliminate_task", stage: "ג", title: "אם אפשר היה להעלים משימה אחת מהשבוע שלכם — מה הייתם בוחרים?", hint: "משפט קצר מספיק. עד 200 תווים.", max: 200, required: true, placeholder: "למשל: להעתיק ידנית כל כתבה מהגיליון לאתר..." },
-        { kind: "interstitial", text: "נשאר עוד קצת. נשמח להבין מה יעזור לכם להרגיש בטוחים." },
+        { kind: "interstitial", text: "עוד קצת וסיימנו" },
         { kind: "scale", key: "desire_help", stage: "ד", title: "כמה הייתם רוצים לקבל עזרה והדרכה בשימוש ב-AI בעבודה?", low: "לא צריך/ה", high: "מאוד אשמח" },
         { kind: "multi", key: "concerns", stage: "ד", title: "מה מדאיג אתכם סביב שימוש ב-AI בעבודה?", hint: "עד שתי תשובות. אם אין חשש מיוחד — בחרו רק את האפשרות האחרונה.", options: CONCERNS, max: 2, exclusive: NO_CONCERN },
         { kind: "single", key: "safety_help", stage: "ד", title: "מה היה גורם לכם להרגיש בטוחים להתחיל?", options: SAFETY },
@@ -1881,6 +1950,57 @@
       return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     }
 
+    function thiefIllustration() {
+      const svg = `<svg viewBox="0 0 220 190" width="200" height="173" role="presentation" xmlns="http://www.w3.org/2000/svg">
+        <ellipse class="thief-dust" cx="54" cy="176" rx="18" ry="5" fill="#002F66" opacity="0.18"/>
+        <ellipse cx="118" cy="178" rx="58" ry="7" fill="#002F66" opacity="0.10"/>
+        <g class="thief-runner">
+          <g class="thief-leg-back">
+            <rect x="96" y="126" width="11" height="38" rx="5.5" fill="#00244f"/>
+            <ellipse cx="112" cy="166" rx="11" ry="6" fill="#1A140C"/>
+          </g>
+          <g class="thief-sack">
+            <path d="M42 108c-4-22 8-38 28-40 14-1 24 10 26 24l-6 32c-4 10-18 16-32 8-10-6-14-14-16-24z" fill="#8A6A32" stroke="#002F66" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M68 94c6 6 14 10 22 12" fill="none" stroke="#002F66" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="58" cy="100" r="3" fill="#002F66" opacity="0.35"/>
+          </g>
+          <path d="M86 100 Q78 108 70 96" fill="none" stroke="#F3D2B3" stroke-width="7" stroke-linecap="round"/>
+          <rect x="88" y="86" width="34" height="46" rx="13" fill="#002F66" transform="rotate(-8 105 109)"/>
+          <rect x="90" y="124" width="30" height="7" rx="2" fill="#1A140C"/>
+          <g class="thief-leg-front">
+            <rect x="98" y="126" width="12" height="38" rx="6" fill="#002F66"/>
+            <ellipse cx="116" cy="166" rx="11" ry="6" fill="#1A140C"/>
+          </g>
+          <path d="M118 98 Q138 108 152 118" fill="none" stroke="#F3D2B3" stroke-width="7" stroke-linecap="round"/>
+          <circle cx="108" cy="64" r="22" fill="#F3D2B3"/>
+          <ellipse cx="86" cy="68" rx="4" ry="5" fill="#F3D2B3"/>
+          <path d="M88 62 Q108 34 132 60 L130 68 Q108 52 90 68Z" fill="#002F66"/>
+          <ellipse cx="110" cy="62" rx="24" ry="6.5" fill="#00244f"/>
+          <path d="M90 70 Q108 62 128 70 Q131 80 124 82 Q108 74 94 82 Q87 80 90 70Z" fill="#1A140C"/>
+          <ellipse cx="101" cy="74" rx="3.3" ry="2.3" fill="#fff"/>
+          <ellipse cx="117" cy="74" rx="3.3" ry="2.3" fill="#fff"/>
+          <circle cx="101.6" cy="74.2" r="1.3" fill="#002F66"/>
+          <circle cx="117.6" cy="74.2" r="1.3" fill="#002F66"/>
+          <path d="M102 87 Q108 92 115 87" fill="none" stroke="#1A140C" stroke-width="1.5" stroke-linecap="round"/>
+          <g class="thief-clock">
+            <circle cx="161" cy="117" r="24" fill="#f7f9fc" stroke="#002F66" stroke-width="3.2"/>
+            <circle cx="161" cy="117" r="20.5" fill="none" stroke="#002F66" stroke-width="0.6" opacity="0.35"/>
+            <g fill="#002F66">
+              <rect x="159.4" y="98" width="3.2" height="6" rx="1"/>
+              <rect x="159.4" y="130" width="3.2" height="6" rx="1"/>
+              <rect x="142" y="115.4" width="6" height="3.2" rx="1"/>
+              <rect x="174" y="115.4" width="6" height="3.2" rx="1"/>
+            </g>
+            <line class="thief-hour" x1="161" y1="117" x2="161" y2="106" stroke="#002F66" stroke-width="3" stroke-linecap="round"/>
+            <line class="thief-minute" x1="161" y1="117" x2="161" y2="100" stroke="#002F66" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="161" cy="117" r="2.4" fill="#002F66"/>
+            <circle cx="161" cy="117" r="1" fill="#f7f9fc"/>
+          </g>
+        </g>
+      </svg>`;
+      return el("div", { class: "thief-scene", "aria-hidden": "true", html: svg });
+    }
+
     function buildScreen(step) {
       const screen = el("div", { class: "screen", "data-screen": step.kind, "data-key": step.key || step.kind, "data-group": answers.department_group || "" });
 
@@ -1896,14 +2016,16 @@
           )
         );
       } else if (step.kind === "interstitial") {
-        screen.append(
-          el("p", { class: "continue-line" }, "— המשך בעמוד הבא —"),
+        const bits = [el("p", { class: "continue-line" }, "— המשך בעמוד הבא —")];
+        if (step.art === "thief") bits.push(thiefIllustration());
+        bits.push(
           titled("h2", step.text),
           el("div", { class: "nav" },
             el("button", { class: "btn ghost", type: "button", onclick: back }, "חזרה"),
             el("button", { class: "btn primary", type: "button", onclick: next }, "המשך")
           )
         );
+        screen.append(...bits);
       } else if (step.kind === "thanks") {
         renderFront(screen);
       } else if (step.kind === "department") {
