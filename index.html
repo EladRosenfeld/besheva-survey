@@ -304,7 +304,7 @@
       margin: 10px 0 12px;
     }
     .lead, .deck { font-size: 1.05rem; margin: 0 0 12px; }
-    .screen[data-screen="intro"] .lead { margin: 0 0 8px; }
+    .screen[data-screen="intro"] .lead { font-size: 1.22rem; margin: 0 0 12px; line-height: 1.45; }
     .screen[data-screen="intro"] .lead.greet { font-weight: 600; }
     .hint, .fine { color: var(--ink-soft); font-size: 0.9rem; margin: 0 0 14px; }
     .privacy {
@@ -431,10 +431,10 @@
     .intro-kicker {
       color: var(--spot);
       font-weight: 800;
-      font-size: 1.3rem;
-      letter-spacing: 0.02em;
+      font-size: 1.44rem;
+      letter-spacing: 0.01em;
       line-height: 1.35;
-      margin: 8px 0 10px;
+      margin: 10px 0 14px;
     }
     h1.intro-headline {
       font-family: "Assistant", "Noto Sans Hebrew", "Arial Hebrew", "Segoe UI", sans-serif;
@@ -543,9 +543,9 @@
     }
     .choices.choices-dense { gap: 5px; }
     @media (max-height: 700px) {
-      .intro-kicker { font-size: 1.15rem; margin: 4px 0 6px; }
+      .intro-kicker { font-size: 1.32rem; margin: 6px 0 10px; }
       html[data-theme] h1.intro-headline { font-size: 1.85rem; margin-bottom: 8px; }
-      .screen[data-screen="intro"] .lead { font-size: 0.95rem; margin: 0 0 6px; }
+      .screen[data-screen="intro"] .lead { font-size: 1.1rem; margin: 0 0 8px; }
       .logo-besheva.lg { height: 56px; }
       .logo-besheva.xl { height: 68px; }
       .screen:not([data-screen="intro"]):not([data-screen="thanks"]) h2 { font-size: 1.05rem; }
@@ -561,7 +561,7 @@
       .double-rule { margin: 4px 0 6px; }
     }
     @media (max-width: 375px) {
-      .intro-kicker { font-size: 1.15rem; }
+      .intro-kicker { font-size: 1.32rem; }
     }
 
     /* —— Theme tokens —— */
@@ -2118,7 +2118,6 @@
       if (step.kind === "intro") {
         screen.append(
           el("div", { class: "intro-kicker" }, "מהדורה מיוחדת · סקר לעובדי בשבע"),
-          titled("h1", "מה גונב לך את הזמן?", { class: "intro-headline" }),
           el("p", { class: "lead greet" }, "שלום לכם חברות וחברי משפחת בשבע,"),
           el("p", { class: "lead" }, "שנת 2027 תוגדר בקבוצת בשבע כשנת ההטמעה והיישום של ה‑AI בכל מחלקות המשרד."),
           el("p", { class: "lead" }, "לשם כך יצרנו עבורכם סקר בשיתוף היועצים שיעסקו בהטמעת ה‑AI בקבוצת בשבע לאורך השנה הבאה."),
