@@ -1,0 +1,1974 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl" data-theme="classic">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#EFE6D0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>השער שלך · מה גונב לך את הזמן? · בשבע</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Frank+Ruhl+Libre:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+
+    :root {
+      --paper: #EFE6D0;
+      --paper-deep: #E5D9BD;
+      --card: #F7F1E3;
+      --ink: #1A140C;
+      --ink-soft: #4A4338;
+      --rule: #1A140C;
+      --navy: #002F66;
+      --spot: #9B1C1C;
+      --gold: #8A6A32;
+      --hl: #F3E2C4;
+      --ok: #1E4D36;
+      --navy-deep: #00244f;
+      --choice-hover: #fff8ea;
+      --choice-selected: #ead9b6;
+      --btn-fg: #fff;
+      --logo: #002F66;
+      --grain-opacity: 0.42;
+      --grain-blend: multiply;
+      --font: "Assistant", "Noto Sans Hebrew", "Arial Hebrew", "Segoe UI", sans-serif;
+      --serif: "Frank Ruhl Libre", "David Libre", "Times New Roman", serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--font);
+      background: var(--paper);
+      color: var(--ink);
+      min-height: 100dvh;
+      line-height: 1.45;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.42;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.2  0 0 0 0 0.16  0 0 0 0 0.1  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+      mix-blend-mode: multiply;
+    }
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100dvh;
+      height: 100dvh;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      perspective: 1600px;
+      perspective-origin: 78% 46%;
+      overflow: hidden;
+    }
+    #app {
+      flex: 1;
+      min-height: 0;
+      position: relative;
+      perspective: 1600px;
+      perspective-origin: 78% 46%;
+      transform-style: preserve-3d;
+      overflow: hidden;
+    }
+    .sheet {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      padding: calc(10px + env(safe-area-inset-top)) 16px calc(20px + env(safe-area-inset-bottom));
+      background-color: var(--paper);
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.2  0 0 0 0 0.16  0 0 0 0 0.1  0 0 0 0.28 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+      transform-origin: right center;
+      transform: rotateY(0deg) translateZ(0);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      will-change: transform;
+      overflow: hidden;
+    }
+    .sheet-curl, .sheet-shadow {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+      z-index: 4;
+    }
+    .sheet-curl {
+      background: linear-gradient(to left,
+        rgba(26,20,12,.32) 0%,
+        rgba(26,20,12,.10) 10%,
+        rgba(255,248,230,.42) 22%,
+        rgba(255,255,255,0) 48%);
+    }
+    .sheet-shadow {
+      background: linear-gradient(to left, rgba(0,0,0,.28), rgba(0,0,0,0) 42%);
+    }
+    .sheet.is-flipping .sheet-curl,
+    .sheet.is-flipping .sheet-shadow {
+      animation: curlFade 720ms ease;
+    }
+    @keyframes curlFade {
+      0% { opacity: 0; }
+      20% { opacity: 1; }
+      70% { opacity: 0.85; }
+      100% { opacity: 0; }
+    }
+    .sheet.flip-out-forward {
+      z-index: 3;
+      animation: flipOutFwd 720ms cubic-bezier(.4,.05,.55,.95) forwards;
+    }
+    .sheet.flip-in-back {
+      z-index: 3;
+      animation: flipInBack 720ms cubic-bezier(.4,.05,.55,.95) forwards;
+    }
+    .sheet.under {
+      z-index: 1;
+    }
+    .sheet.fade-in { animation: sheetFade 280ms ease; }
+    @keyframes sheetFade { from { opacity: 0; } to { opacity: 1; } }
+
+    @keyframes flipOutFwd {
+      0%   { transform: rotateY(0deg); }
+      100% { transform: rotateY(-102deg); }
+    }
+    @keyframes flipInBack {
+      0%   { transform: rotateY(-102deg); }
+      100% { transform: rotateY(0deg); }
+    }
+    .masthead { text-align: center; }
+    .folio {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      color: var(--ink-soft);
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      padding: 5px 0;
+      margin-bottom: 8px;
+    }
+    .folio span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .logo-besheva { width: auto; height: 34px; color: var(--logo, var(--navy)); display: inline-block; vertical-align: middle; }
+    .logo-besheva.lg { height: 58px; }
+    .logo-besheva.xl { height: 72px; }
+    .flag {
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      margin: 6px 0 0;
+      color: var(--ink);
+    }
+    .double-rule {
+      border: 0;
+      border-top: 3px double var(--rule);
+      margin: 8px 0 10px;
+    }
+    .progress-rail {
+      height: 3px;
+      background: var(--paper-deep);
+      margin: 0 0 8px;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0;
+      background: var(--navy);
+      transition: width .35s ease;
+    }
+    .progress-label {
+      font-size: 11px;
+      color: var(--ink-soft);
+      direction: ltr;
+      unicode-bidi: isolate;
+      text-align: left;
+      margin: 0 0 6px;
+    }
+    .draft-strip {
+      background: var(--card);
+      border: 1px solid var(--rule);
+      padding: 6px 10px;
+      margin: 0 0 10px;
+      font-size: 12px;
+      color: var(--ink-soft);
+      min-height: 2.4em;
+    }
+    .draft-strip strong { color: var(--ink); font-weight: 700; }
+    .screen { flex: 1; display: flex; flex-direction: column; min-height: 0; overflow: auto; }
+    @media (prefers-reduced-motion: reduce) {
+      .sheet, .sheet-curl, .sheet-shadow, .progress-bar, .press-roll, .front { animation: none !important; transition: none !important; }
+    }
+    .kicker {
+      color: var(--spot);
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      margin: 6px 0 4px;
+    }
+    h1, h2 {
+      font-family: var(--serif);
+      font-weight: 700;
+      line-height: 1.2;
+      margin: 0 0 12px;
+    }
+    h1 { font-size: 2.25rem; }
+    h2 { font-size: 1.55rem; }
+    .lead, .deck { font-size: 1.05rem; margin: 0 0 12px; }
+    .hint, .fine { color: var(--ink-soft); font-size: 0.9rem; margin: 0 0 14px; }
+    .privacy {
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      padding: 10px 0;
+      margin: 14px 0 20px;
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+    }
+    .choices { display: flex; flex-direction: column; gap: 8px; margin: 4px 0 8px; overflow: auto; flex: 1; min-height: 0; padding-bottom: 10px; -webkit-overflow-scrolling: touch; }
+    .choice {
+      appearance: none;
+      border: 1.5px solid var(--rule);
+      background: var(--card);
+      color: var(--ink);
+      border-radius: 2px;
+      padding: 12px 14px;
+      font: inherit;
+      font-size: 1.04rem;
+      font-weight: 600;
+      text-align: right;
+      width: 100%;
+      min-height: 50px;
+      cursor: pointer;
+      transition: background .15s, box-shadow .15s;
+    }
+    .choice:hover { background: var(--choice-hover); }
+    .choice[aria-pressed="true"], .choice.selected {
+      background: var(--choice-selected);
+      box-shadow: inset 4px 0 0 var(--navy);
+    }
+    .choice.preferred { box-shadow: inset -3px 0 0 var(--spot); }
+    .choice.preferred.selected { box-shadow: inset 4px 0 0 var(--navy), inset -3px 0 0 var(--spot); }
+    .choice .rank {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--navy); color: var(--btn-fg); font-size: 12px; margin-left: 8px;
+    }
+    .other-field { margin: 0 0 12px; }
+    .scale { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 10px 0 6px; }
+    .scale button {
+      appearance: none; border: 1.5px solid var(--rule); background: var(--card);
+      color: var(--ink); border-radius: 2px; min-height: 64px;
+      font: inherit; font-size: 1.25rem; font-weight: 700; cursor: pointer;
+    }
+    .scale button[aria-pressed="true"] { background: var(--navy); color: var(--btn-fg); border-color: var(--navy); }
+    .scale-labels { display: flex; justify-content: space-between; color: var(--ink-soft); font-size: 0.8rem; margin-bottom: 18px; gap: 8px; }
+    .scale-labels span:last-child { text-align: left; }
+    input[type="text"], textarea {
+      width: 100%; font: inherit; font-size: 1.05rem;
+      border: 1.5px solid var(--rule); background: var(--card);
+      border-radius: 2px; padding: 12px 14px; color: var(--ink); outline: none;
+    }
+    textarea { min-height: 130px; resize: vertical; }
+    input[type="text"]:focus, textarea:focus { box-shadow: inset 0 0 0 2px var(--navy); }
+    .counter { text-align: left; color: var(--ink-soft); font-size: 0.8rem; margin: 6px 0 14px; }
+    .field-label { display: block; font-weight: 700; margin: 10px 0 6px; }
+    .nav { display: flex; gap: 10px; margin-top: auto; padding-top: 8px; flex-shrink: 0; }
+    .btn {
+      appearance: none; border: 0; border-radius: 2px;
+      min-height: 54px; padding: 0 18px; font: inherit; font-size: 1.05rem; font-weight: 700; cursor: pointer;
+    }
+    .btn.primary { background: var(--navy); color: var(--btn-fg); flex: 1; }
+    .btn.primary:hover { background: var(--navy-deep); }
+    .btn.primary:disabled { opacity: 0.45; cursor: not-allowed; }
+    .btn.ghost { background: transparent; color: var(--ink-soft); min-width: 84px; border: 1.5px solid var(--rule); }
+    .continue-line { text-align: center; font-family: var(--serif); font-style: italic; margin: 24px 0 10px; color: var(--ink-soft); }
+    .press {
+      position: fixed; inset: 0; z-index: 20; background: var(--paper);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 24px;
+    }
+    .press-roll {
+      width: min(80vw, 280px); height: 8px; background: var(--paper-deep);
+      overflow: hidden; margin: 18px 0; border: 1px solid var(--rule);
+    }
+    .press-roll i {
+      display: block; height: 100%; width: 0; background: var(--navy);
+      animation: roll 1.1s ease forwards;
+    }
+    @keyframes roll { to { width: 100%; } }
+    .press p { font-family: var(--serif); letter-spacing: 0.12em; margin: 8px 0 0; }
+    .front {
+      background: var(--card);
+      border: 1px solid var(--rule);
+      box-shadow: 0 10px 30px rgba(26,20,12,.15), 0 0 0 6px var(--paper-deep);
+      padding: 14px 14px 18px;
+      animation: printIn .7s ease;
+    }
+    @keyframes printIn {
+      0% { opacity: 0; transform: translateY(16px) scale(0.98); filter: contrast(1.4) blur(1px); }
+      55% { opacity: 1; filter: none; }
+      100% { transform: none; }
+    }
+    .front .spot { color: var(--spot); font-weight: 800; letter-spacing: 0.14em; font-size: 11px; }
+    .front h1 { font-size: 1.7rem; margin: 6px 0 10px; }
+    .cols { display: grid; grid-template-columns: 1fr; gap: 0; }
+    .col {
+      border-top: 1px solid var(--rule);
+      padding: 8px 0;
+    }
+    .col h3 { font-family: var(--serif); font-size: 1.02rem; margin: 0 0 4px; }
+    .col p { margin: 0; font-size: 0.92rem; }
+    .weather-box {
+      border: 1.5px solid var(--rule);
+      padding: 8px 10px;
+      margin: 8px 0 0;
+    }
+    .quote { font-family: var(--serif); font-size: 1.05rem; margin: 0; }
+    .internal { font-size: 11px; color: var(--ink-soft); margin-top: 10px; text-align: center; }
+    .internal .survey-url { direction: ltr; unicode-bidi: isolate; }
+    pre.json {
+      background: #1A140C; color: #EFE6D0; border-radius: 2px;
+      padding: 12px; overflow: auto; font-size: 11px; line-height: 1.4;
+      max-height: 220px; direction: ltr; text-align: left; white-space: pre-wrap; word-break: break-word;
+    }
+    details.json-box { margin-top: 12px; font-size: 0.9rem; }
+    .err { color: var(--spot); font-size: 0.92rem; }
+    .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+    /* —— Theme tokens —— */
+    html[data-theme="classic"], html:not([data-theme]) {
+      --paper: #EFE6D0;
+      --paper-deep: #E5D9BD;
+      --card: #F7F1E3;
+      --ink: #1A140C;
+      --ink-soft: #4A4338;
+      --rule: #1A140C;
+      --navy: #002F66;
+      --navy-deep: #00244f;
+      --spot: #9B1C1C;
+      --gold: #8A6A32;
+      --hl: #F3E2C4;
+      --ok: #1E4D36;
+      --choice-hover: #fff8ea;
+      --choice-selected: #ead9b6;
+      --btn-fg: #fff;
+      --logo: #002F66;
+      --grain-opacity: 0.42;
+      --grain-blend: multiply;
+    }
+    html[data-theme="closed"] {
+      --paper: #161410;
+      --paper-deep: #0C0A08;
+      --card: #241F19;
+      --ink: #F2E6C9;
+      --ink-soft: #C4B79A;
+      --rule: #C4B79A;
+      --navy: #F2E6C9;
+      --navy-deep: #DDD0B0;
+      --spot: #E23B3B;
+      --gold: #D4B46A;
+      --hl: #2C271F;
+      --ok: #8FCB9B;
+      --choice-hover: #2A2520;
+      --choice-selected: #3A3428;
+      --btn-fg: #161410;
+      --logo: #F2E6C9;
+      --grain-opacity: 0.28;
+      --grain-blend: overlay;
+      color-scheme: dark;
+    }
+    html[data-theme="proof"] {
+      --paper: #F7F2E6;
+      --paper-deep: #E8DFC9;
+      --card: #FFFBF2;
+      --ink: #1A140C;
+      --ink-soft: #4A4338;
+      --rule: #1A140C;
+      --navy: #002F66;
+      --navy-deep: #00244f;
+      --spot: #C41E1E;
+      --gold: #8A6A32;
+      --hl: #F8E4C8;
+      --ok: #1E4D36;
+      --choice-hover: #fff5e3;
+      --choice-selected: #f3d9b0;
+      --btn-fg: #fff;
+      --logo: #002F66;
+      --grain-opacity: 0.28;
+      --grain-blend: multiply;
+    }
+    html[data-theme="archive"] {
+      --paper: #D7C39A;
+      --paper-deep: #C4AE80;
+      --card: #E6D3A8;
+      --ink: #3A2A16;
+      --ink-soft: #5C4A30;
+      --rule: #6A4E2A;
+      --navy: #3A2A16;
+      --navy-deep: #2A1C0E;
+      --spot: #8A3B16;
+      --gold: #8A6A32;
+      --hl: #E8D6A6;
+      --ok: #3D4F2F;
+      --choice-hover: #eeddb5;
+      --choice-selected: #d4bc86;
+      --btn-fg: #F6E7C3;
+      --logo: #3A2A16;
+      --grain-opacity: 0.5;
+      --grain-blend: multiply;
+    }
+    html[data-theme="holiday"] {
+      --paper: #F4EFE4;
+      --paper-deep: #E2D8C4;
+      --card: #FFFCF6;
+      --ink: #111111;
+      --ink-soft: #3A3A3A;
+      --rule: #111111;
+      --navy: #111111;
+      --navy-deep: #000000;
+      --spot: #C40000;
+      --gold: #8A6A32;
+      --hl: #F6D9A8;
+      --ok: #1E4D36;
+      --choice-hover: #fff4dc;
+      --choice-selected: #f0d2a0;
+      --btn-fg: #fff;
+      --logo: #111111;
+      --grain-opacity: 0.22;
+      --grain-blend: multiply;
+    }
+    .logo-besheva { color: var(--logo); }
+    body::before { opacity: var(--grain-opacity); mix-blend-mode: var(--grain-blend); }
+    html[data-theme="holiday"] h1, html[data-theme="holiday"] h2, html[data-theme="holiday"] .front h1 {
+      letter-spacing: -0.02em;
+    }
+    html[data-theme="holiday"] h1 { font-size: 2.4rem; }
+    html[data-theme="holiday"] .double-rule {
+      border-top: 6px solid var(--rule);
+      border-bottom: 3px solid var(--spot);
+      border-width: 6px 0 3px;
+      border-style: solid;
+      height: 0;
+      margin: 8px 0 12px;
+    }
+    html[data-theme="holiday"] .folio {
+      border-top: 3px solid var(--rule);
+      border-bottom: 3px solid var(--rule);
+      font-weight: 700;
+      text-transform: none;
+    }
+    html[data-theme="closed"] .folio {
+      border-color: var(--gold);
+      color: var(--gold);
+      letter-spacing: 0.08em;
+    }
+    html[data-theme="archive"] .sheet,
+    html[data-theme="archive"] .front {
+      filter: contrast(0.96) sepia(0.18);
+    }
+    html[data-theme="archive"] .front { filter: none; }
+    .halftone {
+      pointer-events: none;
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      opacity: 0.18;
+      background-image: radial-gradient(circle, rgba(58,42,22,.55) 0.7px, transparent 0.85px);
+      background-size: 5px 5px;
+      mix-blend-mode: multiply;
+    }
+    html:not([data-theme="archive"]) .halftone { display: none; }
+
+    .proof-marks { pointer-events: none; position: absolute; inset: 0; z-index: 3; overflow: hidden; }
+    html:not([data-theme="proof"]) .proof-marks { display: none; }
+    .proof-marks span {
+      position: absolute;
+      color: var(--spot);
+      font-family: var(--serif);
+      font-weight: 700;
+      opacity: 0.72;
+      line-height: 1;
+    }
+    .corr {
+      position: relative;
+      display: inline-block;
+      padding: 0 0.12em;
+      box-shadow: inset 0 0 0 1.6px var(--spot);
+      border-radius: 50%;
+    }
+    .corr::after {
+      content: "ע׳";
+      position: absolute;
+      top: -0.7em;
+      left: -0.15em;
+      font-size: 0.45em;
+      color: var(--spot);
+      font-family: var(--font);
+      font-weight: 700;
+    }
+    html:not([data-theme="proof"]) .corr { box-shadow: none; border-radius: 0; padding: 0; }
+    html:not([data-theme="proof"]) .corr::after { content: none; }
+
+    .press-stamp {
+      position: absolute;
+      left: 10px;
+      bottom: 36px;
+      transform: rotate(-18deg);
+      border: 3px solid var(--spot);
+      color: var(--spot);
+      font-weight: 800;
+      font-family: var(--font);
+      letter-spacing: 0.12em;
+      padding: 6px 10px;
+      font-size: 13px;
+      border-radius: 4px;
+      box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--spot);
+      pointer-events: none;
+      z-index: 2;
+      background: transparent;
+      opacity: 0.92;
+    }
+    html:not([data-theme="closed"]) .press-stamp { display: none; }
+    .deadline-chip {
+      display: none;
+      color: var(--spot);
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      font-size: 11px;
+    }
+    html[data-theme="closed"] .deadline-chip { display: inline; }
+
+    /* Style picker */
+    .theme-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 2px 0 8px;
+    }
+    .theme-card {
+      appearance: none;
+      border: 1.5px solid var(--rule);
+      background: var(--card);
+      color: var(--ink);
+      border-radius: 2px;
+      padding: 6px;
+      text-align: right;
+      cursor: pointer;
+      font: inherit;
+      min-height: 0;
+      width: 100%;
+    }
+    .theme-card:focus-visible { outline: 3px solid var(--navy); outline-offset: 2px; }
+    .theme-card[aria-pressed="true"] {
+      box-shadow: inset 0 0 0 2px var(--navy);
+      background: var(--choice-selected);
+    }
+    .theme-thumb {
+      height: 96px;
+      overflow: hidden;
+      border: 1px solid var(--rule);
+      padding: 5px 6px 7px;
+      margin-bottom: 6px;
+      background: var(--paper);
+      color: var(--ink);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    .theme-thumb .t-folio {
+      display: flex;
+      justify-content: space-between;
+      font-size: 7px;
+      letter-spacing: 0.04em;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      padding: 2px 0;
+      color: var(--ink-soft);
+    }
+    .theme-thumb .t-logo { text-align: center; margin: 3px 0 1px; color: var(--logo); line-height: 0; }
+    .theme-thumb .t-logo .logo-besheva { height: 14px; }
+    .theme-thumb .t-rule { border: 0; border-top: 2px double var(--rule); margin: 2px 0 4px; }
+    .theme-thumb .t-hed {
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: 11px;
+      line-height: 1.25;
+      margin: 0;
+      flex: 0 0 auto;
+    }
+    .theme-card .theme-name { font-weight: 800; font-size: 0.9rem; margin: 0 0 1px; }
+    .theme-card .theme-tag { font-size: 0.7rem; color: var(--ink-soft); margin: 0; line-height: 1.25; }
+    .theme-thumb[data-theme="closed"] { background: #161410; color: #F2E6C9; --paper:#161410; --ink:#F2E6C9; --ink-soft:#C4B79A; --rule:#C4B79A; --logo:#F2E6C9; --spot:#E23B3B; --navy:#F2E6C9; }
+    .theme-thumb[data-theme="proof"] { background: #F7F2E6; --paper:#F7F2E6; --ink:#1A140C; --ink-soft:#4A4338; --rule:#1A140C; --logo:#002F66; --spot:#C41E1E; --navy:#002F66; }
+    .theme-thumb[data-theme="archive"] { background: #D7C39A; --paper:#D7C39A; --ink:#3A2A16; --ink-soft:#5C4A30; --rule:#6A4E2A; --logo:#3A2A16; --spot:#8A3B16; --navy:#3A2A16; }
+    .theme-thumb[data-theme="holiday"] { background: #F4EFE4; --paper:#F4EFE4; --ink:#111; --ink-soft:#3A3A3A; --rule:#111; --logo:#111; --spot:#C40000; --navy:#111; }
+    .theme-thumb[data-theme="classic"] { background: #EFE6D0; --paper:#EFE6D0; --ink:#1A140C; --ink-soft:#4A4338; --rule:#1A140C; --logo:#002F66; --spot:#9B1C1C; --navy:#002F66; }
+    .theme-thumb[data-theme="holiday"] .t-rule { border-top: 3px solid var(--rule); border-bottom: 2px solid var(--spot); }
+    .theme-thumb[data-theme="holiday"] .t-hed { font-size: 11.5px; }
+    .theme-thumb[data-theme="archive"] { filter: contrast(0.96) sepia(0.2); }
+    .theme-thumb[data-theme="closed"] .t-folio { border-color: #D4B46A; color: #D4B46A; }
+    .theme-thumb .t-stamp {
+      position: absolute; left: 4px; top: 18px; bottom: auto;
+      border: 1.5px solid var(--spot); color: var(--spot);
+      font-size: 6px; font-weight: 800; letter-spacing: 0.08em;
+      padding: 1px 3px; transform: rotate(-16deg);
+    }
+    .theme-thumb:not([data-theme="closed"]) .t-stamp { display: none; }
+
+    .style-chip {
+      appearance: none;
+      border: 1px solid var(--rule);
+      background: var(--card);
+      color: var(--ink);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      min-height: 36px;
+      padding: 0 10px;
+      border-radius: 2px;
+      cursor: pointer;
+      margin: 0 0 8px;
+    }
+    .style-chip:focus-visible { outline: 3px solid var(--navy); outline-offset: 2px; }
+    .theme-pop {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      background: rgba(0,0,0,.45);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 16px;
+    }
+    .theme-pop .theme-panel {
+      background: var(--paper);
+      color: var(--ink);
+      width: min(430px, 100%);
+      max-height: 86dvh;
+      overflow: auto;
+      padding: 14px 14px 18px;
+      border: 1.5px solid var(--rule);
+    }
+    .theme-pop h2 { font-size: 1.25rem; margin-bottom: 8px; }
+    .front { position: relative; overflow: hidden; }
+    .front-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .front-actions .row { display: flex; gap: 8px; }
+    .front-actions .btn { flex: 1; }
+    .share-fallbacks { display: flex; gap: 8px; }
+    .privacy-note {
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+      margin: 10px 0 0;
+      line-height: 1.4;
+    }
+    .share-status { font-size: 0.85rem; margin: 6px 0 0; color: var(--ink-soft); }
+    html[data-theme="closed"] .choice:hover { background: var(--choice-hover); }
+    html[data-theme="holiday"] .front h1 { color: var(--spot); font-size: 1.85rem; }
+    .front { color: var(--ink); }
+    html[data-theme="closed"] .front {
+      background: #332C24;
+      color: #F2E6C9;
+      box-shadow: 0 10px 30px rgba(0,0,0,.5), 0 0 0 6px var(--paper-deep);
+    }
+
+  </style>
+</head>
+<body data-theme="classic">
+  <div class="wrap">
+    <div id="app" class="stage" aria-live="polite"></div>
+  </div>
+  <script>
+    const ENDPOINT = "https://script.google.com/macros/s/AKfycbwfCqFouJcDokv09mFNJyYeoOYf8ih2hcx_-n_PkyzajklYEdcbvLMOmtxneC5Qv3IS/exec";
+
+    const LOGO_D = "m -219.66693,921.02242 c -0.18732,-0.30308 0.70602,-15.6121 0.99546,-17.05906 0.11044,-0.55214 1.30252,-1.09983 6.34618,-2.91576 3.41562,-1.22976 7.90488,-3.04546 9.97615,-4.03489 l 3.76594,-1.79897 -0.17276,-1.89902 c -0.12591,-1.38412 -1.92799,-6.52855 -6.6462,-18.97309 -3.5604,-9.39074 -6.72736,-17.60652 -7.03768,-18.25728 -0.74831,-1.56921 -1.74193,-1.87097 -6.16074,-1.87097 -2.75612,0 -3.58871,-0.0989 -3.47788,-0.41335 0.0802,-0.22734 1.45798,-4.25551 3.0619,-8.95148 l 2.9162,-8.53813 9.12624,0.1056 c 8.97111,0.10381 9.15432,0.11965 10.77966,0.93232 1.16913,0.58456 1.86423,1.21416 2.37312,2.14947 1.09869,2.01936 10.68059,30.09089 11.2129,32.84979 0.71553,3.70856 0.57527,6.94024 -0.51113,11.77652 -0.5291,2.35537 -0.88946,4.39983 -0.80081,4.54327 0.28959,0.46858 1.81363,-0.80179 3.8183,-3.18279 5.97759,-7.09975 9.20519,-16.93078 9.20519,-28.03834 l 0,-3.56356 -4.83034,0 c -3.72637,0 -4.79498,-0.0945 -4.67558,-0.41336 0.0851,-0.22734 1.24634,-4.17079 2.58048,-8.76321 l 2.4257,-8.34985 13.82392,0 13.82392,0 -0.01,4.38161 c -0.014,6.51383 -0.55162,15.82278 -1.14115,19.75855 -1.19106,7.95175 -4.36437,17.37597 -7.79028,23.13592 -4.62408,7.77443 -11.42113,14.6537 -20.50288,20.75092 -9.24636,6.20774 -25.94832,13.23904 -38.67782,16.28285 -3.2114,0.76789 -3.52406,0.79725 -3.79659,0.35629 z M -47.715918,908.1355 c -3.48285,-0.18849 -16.335788,-1.83813 -16.568295,-2.12648 -0.01867,-0.0231 -2.305871,-11.12838 -5.082685,-24.67829 -2.776809,-13.54991 -5.256613,-25.0429 -5.51067,-25.53999 -0.725462,-1.41943 -2.044781,-1.90705 -5.159722,-1.90705 l -2.757713,0 1.343698,-8.68053 1.343701,-8.68054 9.747441,0 c 11.24977,0 12.593031,0.19607 14.50313,2.11692 1.776743,1.78676 2.45609,4.15006 4.846227,16.8589 1.181849,6.28411 2.295075,11.57192 2.473835,11.75068 0.997755,0.99776 1.943765,-2.32409 4.791022,-16.82336 1.358747,-6.91921 2.549482,-12.91522 2.646083,-13.32444 l 0.175634,-0.74404 11.196576,0 c 9.190986,0 11.265361,0.0829 11.580606,0.46272 0.298663,0.35987 -0.353925,3.73968 -2.935626,15.20389 -1.825814,8.10763 -3.685629,15.71343 -4.132916,16.90177 -1.37176,3.64443 -3.330582,6.01594 -6.162292,7.46056 -1.139258,0.58121 -1.976197,0.64558 -8.394667,0.64558 l -7.129249,0 0.176393,0.74404 c 0.09701,0.40922 0.694989,3.33571 1.328826,6.5033 0.633838,3.16758 1.211936,5.81874 1.28466,5.89147 0.07273,0.0728 1.300501,0.34045 2.728391,0.59494 5.705518,1.01691 14.738086,0.29619 18.530669,-1.47858 3.950382,-1.8486 6.721091,-5.29429 8.559298,-10.64443 0.622525,-1.81187 10.3936965,-41.44965 10.3936965,-42.16311 0,-0.0672 5.5775122,-0.12215 12.3944697,-0.12215 l 12.3944698,0 0.188151,0.74964 c 0.158657,0.63215 -4.121387,18.9745 -8.968924,38.43678 -3.2705592,13.13091 -7.1990899,20.18969 -14.2281832,25.56516 -2.0524629,1.56962 -7.1970262,3.93554 -10.5431938,4.8487 -6.388493,1.74341 -10.51489,2.20291 -20.833292,2.31983 -5.274461,0.0597 -11.673258,-0.004 -14.219549,-0.14189 z m -98.576322,-1.21352 c 0.11249,-0.29319 1.34497,-4.16224 2.73882,-8.59789 l 2.53428,-8.06481 14.45179,0 c 12.0149,0 14.51688,-0.0784 14.83777,-0.46506 0.28558,-0.34411 0.36061,-4.6855 0.28849,-16.69247 l -0.0974,-16.22742 -0.82673,-0.81112 c -1.38005,-1.354 -4.75999,-1.87931 -13.39282,-2.08151 -6.96505,-0.16314 -15.41129,0.21661 -16.81725,0.75613 -0.37031,0.1421 -0.54383,0.0332 -0.54383,-0.34132 0,-0.87016 4.99452,-16.50739 5.4117,-16.9434 0.86854,-0.90775 7.44402,-1.51669 16.579,-1.53536 20.62124,-0.0422 29.868751,3.35864 32.872397,12.08888 1.243879,3.6154 1.408605,6.14716 1.286028,19.76592 -0.133022,14.77938 -0.03026,14.12428 -3.03465,19.34521 -0.837297,1.45502 -1.523462,2.7571 -1.524814,2.89351 -0.0013,0.13641 2.755179,0.24801 6.125629,0.24801 4.933039,0 6.162568,0.0898 6.304865,0.46066 0.09723,0.25337 -0.874704,4.05127 -2.159844,8.43977 -1.285139,4.3885 -2.336619,8.05023 -2.336619,8.1372 0,0.087 -14.152796,0.1581 -31.450662,0.1581 -28.79105,0 -31.43337,-0.0451 -31.2461,-0.53303 z m 165.332964,0.0277 c 0.106663,-0.27798 1.098049,-3.44018 2.203084,-7.02712 1.105034,-3.58695 2.235607,-7.22702 2.512385,-8.08907 l 0.50323,-1.56734 14.607468,-0.0861 14.607469,-0.0861 0.08579,-16.50496 c 0.07427,-14.2872 0.01845,-16.60774 -0.415301,-17.26974 -1.057576,-1.61407 -6.493449,-2.43811 -16.030831,-2.43016 -6.390622,0.005 -13.192358,0.40164 -14.310894,0.83383 -0.375036,0.14492 -0.582595,0.0657 -0.589761,-0.22513 -0.02364,-0.95925 5.159395,-17.14951 5.536504,-17.29437 3.45042,-1.32548 22.267939,-1.79375 29.527396,-0.73479 5.583295,0.81444 9.092564,1.73882 12.070082,3.17937 3.391699,1.64094 5.541486,3.73835 7.022069,6.85096 1.911269,4.01805 2.122757,6.24736 1.994669,21.02599 -0.127428,14.70271 -0.06636,14.31378 -3.076995,19.59677 -0.811506,1.424 -1.475467,2.7125 -1.475467,2.86334 0,0.15083 2.744188,0.27424 6.098196,0.27424 3.523168,0 6.180729,0.13355 6.293652,0.31625 0.1075,0.17394 -0.883388,4.04298 -2.201967,8.59787 l -2.397422,8.28161 -31.378646,0 c -28.014291,0 -31.357852,-0.0542 -31.18471,-0.50539 z";
+
+    function logoSVG(size) {
+      const h = size === "xl" ? "72" : size === "lg" ? "58" : "34";
+      return `<svg class="logo-besheva ${size||""}" viewBox="0 0 312.29949 86.531276" height="${h}" role="img" aria-label="בשבע" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" transform="translate(224.08804,-835.33215)" d="${LOGO_D}"/></svg>`;
+    }
+
+    const OTHER = "אחר";
+    const GROUPS = ["newsroom","proofreading","studio","digital","video","sales","production","management"];
+
+    const GROUP_RULES = [
+      { id: "proofreading", keys: ["לשון","הגהה","מגיה"] },
+      { id: "studio", keys: ["גרפ","עימוד","סטודיו"] },
+      { id: "video", keys: ["וידאו","וידיאו","צילום","אולפן"] },
+      { id: "digital", keys: ["אתר","דיגיטל","רשתות"] },
+      { id: "sales", keys: ["מכיר","מודע","פרסום"] },
+      { id: "production", keys: ["הפק","הפצ","דפוס"] },
+      { id: "management", keys: ["הנהלה","כספ","משאבי"] },
+      { id: "newsroom", keys: ["כתב","מערכת","עורך","עורכ"] },
+      { id: "management", keys: ["מנהל"] }
+    ];
+
+    function normalizeHe(s) {
+      return String(s || "").replace(/[\u0591-\u05C7]/g, "").replace(/[^\u05D0-\u05EAA-Za-z0-9]/g, " ").replace(/\s+/g, " ").trim();
+    }
+
+    function inferGroup(text) {
+      const t = normalizeHe(text);
+      if (!t) return "";
+      for (const rule of GROUP_RULES) {
+        if (rule.keys.some(k => t.includes(k))) return rule.id;
+      }
+      return "";
+    }
+
+    const SOFTWARE = [
+      "Word", "Google Docs", "Excel / Google Sheets", "וורדפרס / אתר",
+      "InDesign", "Photoshop", "Illustrator", "Canva",
+      "Premiere Pro", "כלי שמע", "Acrobat", "WhatsApp", "דוא״ל",
+      "רשתות חברתיות", "כלי ניוזלטר", "Google Analytics / Search Console",
+      "CRM", "כלי הקלטה", "יומן", "מצגות", "מדריך סגנון", OTHER
+    ];
+    const SOFT_PREF = {
+      newsroom: ["Word","Google Docs","כלי הקלטה","WhatsApp","וורדפרס / אתר"],
+      proofreading: ["Word","Google Docs","InDesign","מדריך סגנון"],
+      digital: ["וורדפרס / אתר","Canva","רשתות חברתיות","כלי ניוזלטר","Google Analytics / Search Console"],
+      video: ["Premiere Pro","כלי הקלטה","כלי שמע"],
+      studio: ["InDesign","Photoshop","Illustrator","Canva","Acrobat"],
+      sales: ["Excel / Google Sheets","דוא״ל","WhatsApp","CRM","Canva"],
+      production: ["Excel / Google Sheets","Acrobat","דוא״ל","WhatsApp"],
+      management: ["Word","Excel / Google Sheets","דוא״ל","יומן","מצגות"]
+    };
+    const TASKS = [
+      "כתיבה ועריכת טקסטים",
+      "תמלול ראיונות או ישיבות",
+      "הגהה ובדיקת לשון",
+      "חיפוש רקע ואימות עובדות",
+      "העברת חומר לאתר או לרשתות",
+      "עימוד, עיצוב והתאמת פורמטים",
+      "עריכת וידאו וכתוביות",
+      "הכנת הצעות ומעקב לקוחות",
+      "תיאומים ואישורים",
+      "ישיבות וסיכומים",
+      "בדיקות לפני דפוס והפצה",
+      "הזנת נתונים וגליונות",
+      OTHER
+    ];
+    const TASK_PREF = {
+      newsroom: ["תמלול ראיונות או ישיבות","כתיבה ועריכת טקסטים","חיפוש רקע ואימות עובדות"],
+      proofreading: ["הגהה ובדיקת לשון","כתיבה ועריכת טקסטים","תיאומים ואישורים"],
+      digital: ["העברת חומר לאתר או לרשתות","כתיבה ועריכת טקסטים","תיאומים ואישורים"],
+      video: ["עריכת וידאו וכתוביות","תמלול ראיונות או ישיבות","העברת חומר לאתר או לרשתות"],
+      studio: ["עימוד, עיצוב והתאמת פורמטים","בדיקות לפני דפוס והפצה","תיאומים ואישורים"],
+      sales: ["הכנת הצעות ומעקב לקוחות","תיאומים ואישורים","ישיבות וסיכומים"],
+      production: ["בדיקות לפני דפוס והפצה","תיאומים ואישורים","הזנת נתונים וגליונות"],
+      management: ["ישיבות וסיכומים","תיאומים ואישורים","הזנת נתונים וגליונות"]
+    };
+
+    function orderOptions(list, group, prefMap) {
+      const pref = (group && prefMap[group]) ? prefMap[group] : [];
+      const other = list.filter(x => x === OTHER);
+      if (!pref.length) {
+        return list.filter(x => x !== OTHER).concat(other);
+      }
+      const head = pref.filter(x => list.includes(x));
+      const mid = list.filter(x => !pref.includes(x) && x !== OTHER);
+      return head.concat(mid, other);
+    }
+    function isPreferred(item, group, prefMap) {
+      return !!(group && prefMap[group] && prefMap[group].includes(item));
+    }
+
+    const LOAD_DAYS = ["ראשון","שני","שלישי","רביעי (סגירת גיליון)","חמישי","שישי","העומס די אחיד לאורך השבוע"];
+    const EVEN_LOAD = "העומס די אחיד לאורך השבוע";
+    const AI_TOOLS = ["ChatGPT","Gemini (גוגל)","Claude","Microsoft Copilot","Adobe Firefly / Photoshop AI","Canva AI","כלי תמלול (ivrit.ai, Happy Scribe וכו׳)","כלי הגהה (כבר מגיהה וכו׳)",OTHER,"עדיין לא השתמשתי"];
+    const NO_AI = "עדיין לא השתמשתי";
+    const FREQ = ["כל יום","כמה פעמים בשבוע","פעם–פעמיים בחודש","ניסיתי פעם–פעמיים","בכלל לא"];
+    const HOURS = ["פחות משעה","1–3 שעות","3–5 שעות","5–8 שעות","יותר מ-8 שעות"];
+    const BOTTLENECKS = ["איסוף חומר ומקורות","כתיבה, עריכה או עיבוד","תיאומים ואישורים","עבודה טכנית (העתקה, פורמט, העלאה)","תיקונים ברגע האחרון, בסגירת רביעי","מעקב אחרי משימות או לקוחות",OTHER];
+    const CONCERNS = ["שהתוצאה לא תהיה מדויקת","פגיעה באיכות העיתונאית","פרטיות וסודיות של חומרים","חשש למקום העבודה","אין לי זמן ללמוד כלי חדש","הכלים לא מספיק טובים בעברית","לא בטוח/ה שזה מתאים לבשבע","אין לי חששות מיוחדים"];
+    const NO_CONCERN = "אין לי חששות מיוחדים";
+    const SAFETY = ["כללים ברורים: מה מותר ומה לא","ליווי והדרכה על חומרים אמיתיים של בשבע","שהעורך או המנהל מאשרים לפני שזה נכנס לגיליון","דוגמאות ותבניות מוכנות למחלקה שלי","זמן מוגן להתנסות, בלי לחץ של סגירה",OTHER];
+
+    const answers = {
+      department: "",
+      department_group: "",
+      role: "",
+      load_days: [],
+      ai_tools: [],
+      ai_frequency: "",
+      ai_skill: null,
+      software: [],
+      software_other: "",
+      tasks: [],
+      tasks_other: "",
+      weekly_hours: "",
+      bottleneck: "",
+      diagnostic: "",
+      eliminate_task: "",
+      desire_help: null,
+      concerns: [],
+      safety_help: "",
+      future_wish: "",
+      style: "מהדורה קלאסית",
+      styleId: "classic"
+    };
+
+    let stepIndex = 0;
+    let submitting = false;
+    let flipping = false;
+    let flipTimer = null;
+    let submitError = "";
+    let demoPayload = null;
+    let advanceTimer = null;
+    let showPress = false;
+
+    function goNextSoon() {
+      clearTimeout(advanceTimer);
+      advanceTimer = setTimeout(next, 260);
+    }
+
+    function hebrewDate() {
+      try {
+        return new Date().toLocaleDateString("he-IL", { weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "Asia/Jerusalem" });
+      } catch (e) {
+        return "";
+      }
+    }
+
+    const SURVEY_URL = "https://eladrosenfeld.github.io/besheva-survey/";
+    const SHARE_TEXT = "מילאתי את הסקר של בשבע וקיבלתי שער משלי 🗞️ גם אתם: " + SURVEY_URL;
+
+    const THEMES = [
+      { id: "classic", name: "מהדורה קלאסית", tag: "גיליון רחב, כמו שיורד לדפוס בכל שבוע", paper: "#EFE6D0", ink: "#1A140C", soft: "#4A4338", rule: "#1A140C", logo: "#002F66", spot: "#9B1C1C", card: "#F7F1E3", navy: "#002F66" },
+      { id: "closed", name: "נסגר לדפוס", tag: "ליל רביעי, השעון כבר לא סלחן", paper: "#161410", ink: "#F2E6C9", soft: "#C4B79A", rule: "#C4B79A", logo: "#F2E6C9", spot: "#E23B3B", card: "#241F19", navy: "#F2E6C9" },
+      { id: "proof", name: "עט המגיה", tag: "עוד סימן שאלה בגיליון, בבקשה", paper: "#F7F2E6", ink: "#1A140C", soft: "#4A4338", rule: "#1A140C", logo: "#002F66", spot: "#C41E1E", card: "#FFFBF2", navy: "#002F66" },
+      { id: "archive", name: "מסרט הארכיון", tag: "מצהיב מרוב שנים, וריח של מיקרופילם", paper: "#D7C39A", ink: "#3A2A16", soft: "#5C4A30", rule: "#6A4E2A", logo: "#3A2A16", spot: "#8A3B16", card: "#E6D3A8", navy: "#3A2A16" },
+      { id: "holiday", name: "מהדורת חג", tag: "כותרות שצועקות מעבר לדלפק", paper: "#F4EFE4", ink: "#111111", soft: "#3A3A3A", rule: "#111111", logo: "#111111", spot: "#C40000", card: "#FFFCF6", navy: "#111111" }
+    ];
+
+    function themeById(id) {
+      return THEMES.find(t => t.id === id) || THEMES[0];
+    }
+    function currentThemeId() {
+      return document.documentElement.getAttribute("data-theme") || answers.styleId || "classic";
+    }
+    function currentTheme() {
+      return themeById(currentThemeId());
+    }
+    function applyTheme(id, opts) {
+      const t = themeById(id);
+      document.documentElement.setAttribute("data-theme", t.id);
+      document.body.setAttribute("data-theme", t.id);
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute("content", t.paper);
+      answers.style = t.name;
+      answers.styleId = t.id;
+      if (opts && opts.rerender) render();
+    }
+
+    function lastWordNodes(text) {
+      const s = String(text);
+      const m = s.match(/^(.*?)(\S+)(\s*)$/);
+      if (!m || !m[1]) return [s];
+      const span = el("span", { class: "corr" }, m[2]);
+      return [m[1], span, m[3] || ""];
+    }
+    function titled(tag, text, attrs) {
+      const node = el(tag, attrs || {});
+      const parts = currentThemeId() === "proof" ? lastWordNodes(text) : [text];
+      node.append(...parts);
+      return node;
+    }
+
+    function themeThumb(t) {
+      const thumb = el("div", { class: "theme-thumb", "data-theme": t.id, "aria-hidden": "true" });
+      thumb.append(
+        el("div", { class: "t-folio" }, el("span", {}, "גיליון מיוחד"), el("span", {}, "בשבע")),
+        el("div", { class: "t-logo", html: logoSVG("") }),
+        el("hr", { class: "t-rule" }),
+        el("div", { class: "t-stamp" }, "נסגר לדפוס")
+      );
+      const hed = el("p", { class: "t-hed" });
+      if (t.id === "proof") hed.append("מה גונב לך את ", el("span", { class: "corr" }, "הזמן?"));
+      else hed.append("מה גונב לך את הזמן?");
+      thumb.append(hed);
+      return thumb;
+    }
+
+    function themeCard(t, selected, onPick) {
+      return el("button", {
+        type: "button",
+        class: "theme-card",
+        "data-theme": t.id,
+        "aria-pressed": selected === t.id,
+        onclick: () => onPick(t.id)
+      },
+        themeThumb(t),
+        el("div", { class: "theme-name" }, t.name),
+        el("p", { class: "theme-tag" }, t.tag)
+      );
+    }
+
+    function themeGrid(onPick) {
+      const grid = el("div", { class: "theme-grid", role: "group", "aria-label": "סגנון הגיליון" });
+      const selected = currentThemeId();
+      THEMES.forEach(t => grid.append(themeCard(t, selected, onPick)));
+      return grid;
+    }
+
+    function closeThemePop() {
+      const pop = document.getElementById("themePop");
+      if (pop) pop.remove();
+    }
+
+    function openThemePicker() {
+      closeThemePop();
+      const panel = el("div", { class: "theme-panel", role: "dialog", "aria-labelledby": "themePopTitle", tabindex: "-1" },
+        el("h2", { id: "themePopTitle" }, "בחרו סגנון לגיליון"),
+        themeGrid(id => {
+          applyTheme(id);
+          closeThemePop();
+          render();
+        }),
+        el("div", { class: "nav" },
+          el("button", { type: "button", class: "btn ghost", onclick: closeThemePop }, "סגירה")
+        )
+      );
+      const pop = el("div", { class: "theme-pop", id: "themePop" });
+      pop.addEventListener("click", ev => { if (ev.target === pop) closeThemePop(); });
+      pop.append(panel);
+      document.body.append(pop);
+      const onKey = ev => {
+        if (ev.key === "Escape") { closeThemePop(); document.removeEventListener("keydown", onKey); }
+      };
+      document.addEventListener("keydown", onKey);
+      const first = panel.querySelector(".theme-card");
+      if (first) first.focus();
+    }
+
+    function styleChip(extraClass) {
+      const t = currentTheme();
+      return el("button", {
+        type: "button",
+        class: "style-chip" + (extraClass ? " " + extraClass : ""),
+        "aria-haspopup": "dialog",
+        "aria-label": "שינוי סגנון הגיליון, כרגע " + t.name,
+        onclick: openThemePicker
+      }, "סגנון: " + t.name);
+    }
+
+    function themeDecorations() {
+      const wrap = el("div", { class: "theme-decor", "aria-hidden": "true" });
+      wrap.append(el("div", { class: "halftone" }));
+      const marks = el("div", { class: "proof-marks" });
+      [
+        { t: "צ״ל", top: "18%", right: "6px", rot: "-8deg", size: "13px" },
+        { t: "קצר!", top: "46%", left: "8px", rot: "12deg", size: "12px" },
+        { t: "?", top: "68%", right: "14px", rot: "-4deg", size: "22px" },
+        { t: "✓", top: "32%", left: "10px", rot: "6deg", size: "16px" }
+      ].forEach(m => {
+        const s = el("span", {}, m.t);
+        s.style.top = m.top;
+        if (m.right) s.style.right = m.right;
+        if (m.left) s.style.left = m.left;
+        s.style.transform = "rotate(" + m.rot + ")";
+        s.style.fontSize = m.size;
+        marks.append(s);
+      });
+      wrap.append(marks);
+      return wrap;
+    }
+
+    function wrapLines(ctx, text, maxWidth) {
+      const raw = String(text);
+      const words = raw.split(/\s+/).filter(Boolean);
+      const lines = [];
+      let line = "";
+      for (const w of words) {
+        const trial = line ? line + " " + w : w;
+        if (ctx.measureText(trial).width <= maxWidth) line = trial;
+        else { if (line) lines.push(line); line = w; }
+      }
+      if (line) lines.push(line);
+      return lines.length ? lines : [raw];
+    }
+
+    function fillNoise(ctx, w, h, alpha) {
+      const tile = document.createElement("canvas");
+      tile.width = 96; tile.height = 96;
+      const tctx = tile.getContext("2d");
+      const img = tctx.createImageData(96, 96);
+      for (let i = 0; i < img.data.length; i += 4) {
+        const v = 80 + Math.random() * 120;
+        img.data[i] = v; img.data[i+1] = v * 0.92; img.data[i+2] = v * 0.78; img.data[i+3] = 255;
+      }
+      tctx.putImageData(img, 0, 0);
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.globalCompositeOperation = "multiply";
+      const pat = ctx.createPattern(tile, "repeat");
+      ctx.fillStyle = pat;
+      ctx.fillRect(0, 0, w, h);
+      ctx.restore();
+    }
+
+    function loadLogoImage(color) {
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 312.29949 86.531276" width="624" height="173"><path fill="${color}" transform="translate(224.08804,-835.33215)" d="${LOGO_D}"/></svg>`;
+      const url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = url;
+      });
+    }
+
+    async function waitFonts() {
+      if (document.fonts && document.fonts.ready) {
+        try { await document.fonts.ready; } catch (e) {}
+        try {
+          await Promise.all([
+            document.fonts.load('700 72px "Frank Ruhl Libre"'),
+            document.fonts.load('500 28px "Frank Ruhl Libre"'),
+            document.fonts.load("700 28px Assistant"),
+            document.fonts.load("400 24px Assistant"),
+            document.fonts.load("600 22px Assistant")
+          ]);
+        } catch (e) {}
+      }
+    }
+
+    function frontModel() {
+      const t = currentTheme();
+      const w = weather();
+      const wish = (answers.future_wish || "").trim();
+      return {
+        theme: t,
+        date: hebrewDate(),
+        headline: frontHeadline(),
+        deck: answers.department ? ("מהשטח · " + answers.department + (answers.role ? " · " + answers.role : "")) : "מהשטח",
+        tools: toolsLine(),
+        weatherLabel: w.label,
+        weatherDetail: w.detail,
+        wish: wish ? "«" + wish + "»" : "לא צוין משאלה. גם זה בסדר."
+      };
+    }
+
+    function drawBarcode(ctx, x, y, w, h, color, seed) {
+      let n = 0;
+      const s = String(seed || "besheva");
+      for (let i = 0; i < s.length; i++) n = (n * 33 + s.charCodeAt(i)) >>> 0;
+      const rnd = () => { n = (n * 1664525 + 1013904223) >>> 0; return n; };
+      ctx.save();
+      ctx.fillStyle = color;
+      let px = x;
+      ctx.fillRect(px, y, 3, h); px += 5;
+      ctx.fillRect(px, y, 1, h); px += 4;
+      while (px < x + w - 8) {
+        const bar = 1 + (rnd() % 3);
+        const gap = 1 + (rnd() % 2);
+        ctx.fillRect(px, y, bar, h);
+        px += bar + gap;
+      }
+      ctx.fillRect(px, y, 1, h); px += 4;
+      ctx.fillRect(px, y, 3, h);
+      ctx.restore();
+    }
+
+    async function renderFrontCanvas() {
+      await waitFonts();
+      const m = frontModel();
+      const t = m.theme;
+      const W = 1080, H = 1520, P = 64;
+      const canvas = document.createElement("canvas");
+      canvas.width = W;
+      canvas.height = H;
+      const ctx = canvas.getContext("2d");
+      ctx.direction = "rtl";
+      ctx.textAlign = "right";
+      ctx.textBaseline = "top";
+
+      ctx.fillStyle = t.paper;
+      ctx.fillRect(0, 0, W, H);
+      fillNoise(ctx, W, H, t.id === "closed" ? 0.18 : t.id === "archive" ? 0.32 : 0.16);
+
+      if (t.id === "archive") {
+        ctx.save();
+        ctx.globalAlpha = 0.16;
+        ctx.fillStyle = t.ink;
+        for (let y = 0; y < H; y += 6) {
+          for (let x = 0; x < W; x += 6) {
+            ctx.beginPath();
+            ctx.arc(x, y, 1.1, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+        ctx.restore();
+      }
+
+      const innerW = W - P * 2;
+      let y = 52;
+      ctx.strokeStyle = t.id === "closed" ? t.soft : t.rule;
+      ctx.lineWidth = t.id === "holiday" ? 4 : 2;
+      ctx.beginPath(); ctx.moveTo(P, y); ctx.lineTo(W - P, y); ctx.stroke();
+      y += 10;
+      ctx.fillStyle = t.id === "closed" ? "#D4B46A" : t.soft;
+      ctx.font = "600 22px Assistant, 'Noto Sans Hebrew', sans-serif";
+      ctx.fillText(m.date, W - P, y);
+      ctx.textAlign = "center";
+      ctx.fillText("סקר פנימי", W / 2, y);
+      ctx.textAlign = "left";
+      ctx.fillText("השער שלך", P, y);
+      ctx.textAlign = "right";
+      y += 32;
+      ctx.beginPath(); ctx.moveTo(P, y); ctx.lineTo(W - P, y); ctx.stroke();
+      y += 24;
+
+      const logo = await loadLogoImage(t.logo);
+      const logoH = 92;
+      const logoW = logoH * (312.3 / 86.53);
+      ctx.drawImage(logo, (W - logoW) / 2, y, logoW, logoH);
+      y += logoH + 18;
+
+      if (t.id === "holiday") {
+        ctx.fillStyle = t.rule;
+        ctx.fillRect(P, y, innerW, 8);
+        ctx.fillStyle = t.spot;
+        ctx.fillRect(P, y + 10, innerW, 5);
+        y += 28;
+      } else {
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = t.rule;
+        ctx.beginPath(); ctx.moveTo(P, y); ctx.lineTo(W - P, y); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(P, y + 6); ctx.lineTo(W - P, y + 6); ctx.stroke();
+        y += 22;
+      }
+
+      ctx.fillStyle = t.spot;
+      ctx.font = "800 22px Assistant, 'Noto Sans Hebrew', sans-serif";
+      try { ctx.letterSpacing = "0.14em"; } catch (e) {}
+      ctx.fillText("בלעדי", W - P, y);
+      try { ctx.letterSpacing = "0px"; } catch (e) {}
+      y += 36;
+
+      ctx.fillStyle = t.id === "holiday" ? t.spot : t.ink;
+      ctx.font = '700 64px "Frank Ruhl Libre", "Times New Roman", serif';
+      const heads = wrapLines(ctx, m.headline, innerW);
+      heads.forEach((line, i) => {
+        if (t.id === "proof" && i === heads.length - 1) {
+          const words = line.split(/\s+/);
+          const last = words.pop();
+          const prefix = words.join(" ");
+          const lastW = ctx.measureText(last).width;
+          ctx.fillText(line, W - P, y);
+          ctx.strokeStyle = t.spot;
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.ellipse(W - P - (ctx.measureText(prefix ? prefix + " " : "").width) - lastW / 2, y + 30, lastW / 2 + 10, 34, 0, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.font = "700 20px Assistant, sans-serif";
+          ctx.fillStyle = t.spot;
+          ctx.fillText("ע׳", W - P - (prefix ? ctx.measureText(prefix + " ").width : 0) - lastW - 6, y - 18);
+          ctx.font = '700 64px "Frank Ruhl Libre", "Times New Roman", serif';
+          ctx.fillStyle = t.id === "holiday" ? t.spot : t.ink;
+        } else {
+          ctx.fillText(line, W - P, y);
+        }
+        y += 74;
+      });
+      y += 4;
+
+      ctx.fillStyle = t.ink;
+      ctx.font = "400 28px Assistant, 'Noto Sans Hebrew', sans-serif";
+      wrapLines(ctx, m.deck, innerW).forEach(line => { ctx.fillText(line, W - P, y); y += 38; });
+      y += 10;
+
+      const blocks = [
+        { h: "בארגז הכלים", p: m.tools },
+        { h: "תחזית ה־AI", p: m.weatherLabel + " — " + m.weatherDetail },
+        { h: "בעוד חצי שנה", p: m.wish }
+      ];
+      blocks.forEach(b => {
+        ctx.strokeStyle = t.rule;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.moveTo(P, y); ctx.lineTo(W - P, y); ctx.stroke();
+        y += 16;
+        ctx.fillStyle = t.ink;
+        ctx.font = '700 30px "Frank Ruhl Libre", "Times New Roman", serif';
+        ctx.fillText(b.h, W - P, y);
+        y += 40;
+        ctx.font = "400 26px Assistant, 'Noto Sans Hebrew', sans-serif";
+        wrapLines(ctx, b.p, innerW).forEach(line => { ctx.fillText(line, W - P, y); y += 34; });
+        y += 10;
+      });
+
+      y += 14;
+      ctx.strokeStyle = t.rule;
+      ctx.lineWidth = t.id === "holiday" ? 4 : 2;
+      ctx.beginPath(); ctx.moveTo(P, y); ctx.lineTo(W - P, y); ctx.stroke();
+      y += 18;
+      ctx.fillStyle = t.spot;
+      ctx.font = "800 20px Assistant, 'Noto Sans Hebrew', sans-serif";
+      try { ctx.letterSpacing = "0.1em"; } catch (e) {}
+      ctx.fillText("עוד בגיליון", W - P, y);
+      try { ctx.letterSpacing = "0px"; } catch (e) {}
+      y += 34;
+
+      const stories = [
+        { kicker: "המשימה", hed: topTaskLabel(), dek: "השעות שנעלמות מהשבוע — בכותרת הראשית של העמוד." },
+        { kicker: "הכלים", hed: (m.tools || "טרם צוינו כלים").split(" · ")[0], dek: "מה שכבר פתוח על השולחן, במערכת או מחוצה לה." },
+        { kicker: "התחזית", hed: m.weatherLabel, dek: m.weatherDetail },
+        { kicker: "סגירת השבוע", hed: "ליל רביעי מתקרב", dek: "השעון לא סלחן, והסקר עוד פתוח לעוד עובדים." }
+      ];
+      const gap = 40;
+      const colW = (innerW - gap) / 2;
+      const colRight = W - P;
+      const colLeft = P + colW;
+      let yR = y, yL = y;
+      const storiesTop = y;
+      stories.forEach((s, i) => {
+        const right = i % 2 === 0;
+        let cy = right ? yR : yL;
+        const x = right ? colRight : colLeft;
+        ctx.fillStyle = t.spot;
+        ctx.font = "800 16px Assistant, 'Noto Sans Hebrew', sans-serif";
+        ctx.textAlign = "right";
+        ctx.fillText(s.kicker, x, cy);
+        cy += 24;
+        ctx.fillStyle = t.ink;
+        ctx.font = '700 28px "Frank Ruhl Libre", "Times New Roman", serif';
+        wrapLines(ctx, s.hed, colW).slice(0, 2).forEach(line => { ctx.fillText(line, x, cy); cy += 34; });
+        ctx.fillStyle = t.soft;
+        ctx.font = "400 22px Assistant, 'Noto Sans Hebrew', sans-serif";
+        wrapLines(ctx, s.dek, colW).slice(0, 3).forEach(line => { ctx.fillText(line, x, cy); cy += 28; });
+        cy += 16;
+        if (right) yR = cy; else yL = cy;
+      });
+      const midX = P + colW + gap / 2;
+      ctx.strokeStyle = t.rule;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(midX, storiesTop - 4);
+      ctx.lineTo(midX, Math.max(yR, yL) - 10);
+      ctx.stroke();
+      y = Math.max(yR, yL) + 4;
+
+      if (t.id === "proof") {
+        ctx.save();
+        ctx.fillStyle = t.spot;
+        ctx.font = '700 28px "Frank Ruhl Libre", serif';
+        ctx.globalAlpha = 0.75;
+        ctx.translate(80, 420);
+        ctx.rotate(12 * Math.PI / 180);
+        ctx.textAlign = "left";
+        ctx.fillText("קצר!", 0, 0);
+        ctx.restore();
+      }
+
+      ctx.strokeStyle = t.rule;
+      ctx.lineWidth = t.id === "holiday" ? 3 : 1.5;
+      ctx.beginPath(); ctx.moveTo(P, y); ctx.lineTo(W - P, y); ctx.stroke();
+      y += 22;
+
+      const barX = P, barY = y, barW = 280, barH = 64;
+      drawBarcode(ctx, barX, barY, barW, barH, t.ink, t.id + m.date);
+      ctx.fillStyle = t.soft;
+      ctx.font = "600 16px Assistant, sans-serif";
+      ctx.textAlign = "left";
+      ctx.direction = "ltr";
+      ctx.fillText("eladrosenfeld.github.io/besheva-survey", barX, barY + barH + 8);
+      ctx.direction = "rtl";
+      ctx.textAlign = "right";
+      ctx.fillStyle = t.ink;
+      ctx.font = '700 28px "Frank Ruhl Libre", "Times New Roman", serif';
+      ctx.fillText("עותק אישי", W - P, barY);
+      ctx.fillStyle = t.soft;
+      ctx.font = "400 20px Assistant, 'Noto Sans Hebrew', sans-serif";
+      ctx.fillText("גיליון הסקר · " + m.date, W - P, barY + 36);
+
+      if (t.id === "closed") {
+        ctx.save();
+        ctx.translate(P + 200, barY + 28);
+        ctx.rotate(-16 * Math.PI / 180);
+        ctx.strokeStyle = t.spot;
+        ctx.lineWidth = 6;
+        ctx.strokeRect(-130, -36, 300, 72);
+        ctx.strokeRect(-122, -28, 284, 56);
+        ctx.fillStyle = t.spot;
+        ctx.font = "800 32px Assistant, 'Noto Sans Hebrew', sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("נסגר לדפוס", 20, 0);
+        ctx.restore();
+        ctx.textAlign = "right";
+        ctx.textBaseline = "top";
+        ctx.direction = "rtl";
+      }
+
+      y = barY + barH + 36;
+
+      ctx.strokeStyle = t.rule;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(P, y); ctx.lineTo(W - P, y); ctx.stroke();
+      y += 16;
+      ctx.fillStyle = t.soft;
+      ctx.font = "400 20px Assistant, 'Noto Sans Hebrew', sans-serif";
+      const footHe = "מהדורה אישית · גם אתם יכולים  ";
+      const footUrl = "eladrosenfeld.github.io/besheva-survey";
+      ctx.direction = "ltr";
+      const urlW = ctx.measureText(footUrl).width;
+      ctx.direction = "rtl";
+      const heW = ctx.measureText(footHe).width;
+      const footW = heW + urlW;
+      const footRight = W / 2 + footW / 2;
+      ctx.textAlign = "right";
+      ctx.fillText(footHe, footRight, y);
+      ctx.direction = "ltr";
+      ctx.textAlign = "left";
+      ctx.fillText(footUrl, footRight - footW, y);
+      ctx.direction = "rtl";
+      ctx.textAlign = "right";
+
+      ctx.strokeStyle = t.rule;
+      ctx.lineWidth = 2;
+      ctx.strokeRect(24, 24, W - 48, H - 48);
+      return canvas;
+    }
+
+    async function canvasToBlob(canvas) {
+      return new Promise((resolve, reject) => {
+        canvas.toBlob(b => b ? resolve(b) : reject(new Error("toBlob failed")), "image/png");
+      });
+    }
+
+    async function buildFrontFile() {
+      const canvas = await renderFrontCanvas();
+      const blob = await canvasToBlob(canvas);
+      const file = new File([blob], "besheva-front-page.png", { type: "image/png" });
+      return { canvas, blob, file };
+    }
+
+    function setShareStatus(text) {
+      const n = document.getElementById("shareStatus");
+      if (n) n.textContent = text || "";
+    }
+
+    async function downloadFront() {
+      try {
+        setShareStatus("מכינים את השער…");
+        const { blob } = await buildFrontFile();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "besheva-front-page.png";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 2000);
+        setShareStatus("השער ירד למכשיר.");
+      } catch (err) {
+        setShareStatus("ההורדה לא הצליחה. נסו שוב.");
+      }
+    }
+
+    function showShareFallbacks() {
+      const box = document.getElementById("shareFallbacks");
+      if (box) box.hidden = false;
+    }
+
+    async function shareFront() {
+      try {
+        setShareStatus("מכינים את השער…");
+        const { file } = await buildFrontFile();
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({ files: [file], text: SHARE_TEXT, title: "השער שלי · בשבע" });
+          setShareStatus("");
+          return;
+        }
+        if (navigator.share) {
+          await navigator.share({ text: SHARE_TEXT, url: SURVEY_URL, title: "השער שלי · בשבע" });
+          setShareStatus("");
+          return;
+        }
+        showShareFallbacks();
+        setShareStatus("אפשר לשתף בואטסאפ או להעתיק את הקישור.");
+      } catch (err) {
+        if (err && err.name === "AbortError") { setShareStatus(""); return; }
+        showShareFallbacks();
+        setShareStatus("השיתוף לא היה זמין. אפשר וואטסאפ או העתקת קישור.");
+      }
+    }
+
+    async function copySurveyLink() {
+      try {
+        await navigator.clipboard.writeText(SURVEY_URL);
+        setShareStatus("הקישור הועתק.");
+      } catch (err) {
+        setShareStatus(SURVEY_URL);
+      }
+    }
+
+    function buildSteps() {
+      const group = answers.department_group;
+      return [
+        { kind: "intro" },
+        { kind: "theme", title: "באיזה סגנון ייצא הגיליון שלכם?" },
+        { kind: "department", stage: "א", title: "באיזו מחלקה או צוות אתם עובדים?" },
+        { kind: "multi", key: "load_days", stage: "א", title: "באילו ימים העומס אצלך הכי גבוה?", hint: "אפשר לבחור יותר מיום אחד. אם העומס אחיד — בחרו רק את האפשרות האחרונה.", options: LOAD_DAYS, exclusive: EVEN_LOAD },
+        { kind: "interstitial", text: "הכתבה מתחילה להתהוות. עכשיו נעבור לכלים." },
+        { kind: "multi", key: "ai_tools", stage: "ב", title: "באילו כלי AI כבר השתמשתם, בעבודה או מחוצה לה?", hint: "אפשר כמה תשובות. אם עדיין לא התנסיתם — בחרו רק את האפשרות האחרונה.", options: AI_TOOLS, exclusive: NO_AI },
+        { kind: "single", key: "ai_frequency", stage: "ב", title: "באיזו תדירות אתם משתמשים בכלי AI בעבודה?", options: FREQ },
+        { kind: "scale", key: "ai_skill", stage: "ב", title: "עד כמה אתם מרגישים בנוח להשתמש ב-AI בעבודה?", low: "בכלל לא", high: "בביטחון מלא" },
+        { kind: "multi", key: "software", stage: "ב", title: "באילו תוכנות אתם עובדים באופן קבוע?", hint: group ? "סידרנו בראש את הכלים שלרוב רלוונטיים למה שכתבתם. אפשר לבחור מכל הרשימה, כולל אחר." : "רשימה כללית. אפשר לבחור כמה, כולל אחר.", options: orderOptions(SOFTWARE, group, SOFT_PREF), prefMap: SOFT_PREF, otherKey: "software_other" },
+        { kind: "interstitial", text: "מעולה. החלק הבא הוא הכי חשוב: מה גונב לך את הזמן." },
+        { kind: "ranked", key: "tasks", stage: "ג", title: "מהן שלוש המשימות שגוזלות לכם הכי הרבה זמן בשבוע רגיל?", hint: "בחרו עד שלוש, לפי הסדר: הראשונה היא זו שגוזלת הכי הרבה. הרשימה כללית; בראש מופיעות הצעות לפי מה שציינתם.", options: orderOptions(TASKS, group, TASK_PREF), max: 3, min: 1, prefMap: TASK_PREF, otherKey: "tasks_other" },
+        { kind: "single", key: "weekly_hours", stage: "ג", title: "כמה שעות בשבוע הולכות על המשימה שסימנתם ראשונה?", options: HOURS },
+        { kind: "single", key: "bottleneck", stage: "ג", title: "באיזה שלב העבודה בדרך כלל נתקעת?", options: BOTTLENECKS },
+        { kind: "text", key: "diagnostic", stage: "ג", title: "איפה העבודה שלך נתקעת יותר מכל בשבוע רגיל?", hint: "משפט או שניים. עד 200 תווים.", max: 200, required: true, placeholder: "למשל: מחכה לחומר ברגע האחרון, ואז הכול מתרכז ביום רביעי..." },
+        { kind: "text", key: "eliminate_task", stage: "ג", title: "אם אפשר היה להעלים משימה אחת מהשבוע שלכם — מה הייתם בוחרים?", hint: "משפט קצר מספיק. עד 200 תווים.", max: 200, required: true, placeholder: "למשל: להעתיק ידנית כל כתבה מהגיליון לאתר..." },
+        { kind: "interstitial", text: "נשאר עוד קצת. נשמח להבין מה יעזור לכם להרגיש בטוחים." },
+        { kind: "scale", key: "desire_help", stage: "ד", title: "כמה הייתם רוצים לקבל עזרה והדרכה בשימוש ב-AI בעבודה?", low: "לא צריך/ה", high: "מאוד אשמח" },
+        { kind: "multi", key: "concerns", stage: "ד", title: "מה מדאיג אתכם סביב שימוש ב-AI בעבודה?", hint: "עד שתי תשובות. אם אין חשש מיוחד — בחרו רק את האפשרות האחרונה.", options: CONCERNS, max: 2, exclusive: NO_CONCERN },
+        { kind: "single", key: "safety_help", stage: "ד", title: "מה היה גורם לכם להרגיש בטוחים להתחיל?", options: SAFETY },
+        { kind: "interstitial", text: "שאלה אחרונה, ורשות לא לענות. אחר כך נדפיס את השער." },
+        { kind: "text", key: "future_wish", stage: "ה", title: "בעוד חצי שנה, מה הייתם רוצים שיהיה קל יותר בעבודה?", hint: "רשות. עד 250 תווים.", max: 250, required: false, placeholder: "למשל: שראיון מוקלט יהפוך לתמליל אמין בלי שאבזבז חצי בוקר..." },
+        { kind: "thanks" }
+      ];
+    }
+
+    function questionSteps(steps) {
+      return steps.filter(s => !["intro","theme","interstitial","thanks"].includes(s.kind));
+    }
+    function currentQuestionNumber(steps, index) {
+      let n = 0;
+      for (let i = 0; i <= index && i < steps.length; i++) {
+        if (!["intro","theme","interstitial","thanks"].includes(steps[i].kind)) n++;
+      }
+      return n;
+    }
+
+    function withOther(arr, otherText) {
+      const out = (arr || []).slice();
+      const t = (otherText || "").trim();
+      const i = out.indexOf(OTHER);
+      if (i >= 0 && t) out[i] = OTHER + ": " + t;
+      return out;
+    }
+
+    function isAnswered(step) {
+      if (!step || ["intro","interstitial","thanks"].includes(step.kind)) return true;
+      if (step.kind === "theme") return !!(answers.styleId);
+      if (step.kind === "department") return (answers.department || "").trim().length >= 2;
+      const v = answers[step.key];
+      if (step.kind === "multi" || step.kind === "ranked") {
+        const min = step.min || 1;
+        return Array.isArray(v) && v.length >= min;
+      }
+      if (step.kind === "scale") return Number.isInteger(v) && v >= 1 && v <= 5;
+      if (step.kind === "text") {
+        const t = (v || "").trim();
+        if (step.required) return t.length > 0 && t.length <= (step.max || 1000);
+        return t.length <= (step.max || 1000);
+      }
+      return v !== "" && v != null;
+    }
+
+    function setSingle(key, value) { answers[key] = value; }
+
+    function toggleMulti(step, value) {
+      const key = step.key;
+      let cur = Array.isArray(answers[key]) ? answers[key].slice() : [];
+      if (step.exclusive && value === step.exclusive) {
+        answers[key] = cur.includes(value) ? [] : [value];
+        render();
+        return;
+      }
+      if (step.exclusive) cur = cur.filter(x => x !== step.exclusive);
+      const i = cur.indexOf(value);
+      if (i >= 0) cur.splice(i, 1);
+      else {
+        if (step.max && cur.length >= step.max) return;
+        cur.push(value);
+      }
+      answers[key] = cur;
+      render();
+    }
+
+    function el(tag, attrs, ...children) {
+      const node = document.createElement(tag);
+      if (attrs) {
+        for (const [k, v] of Object.entries(attrs)) {
+          if (v == null || v === false) continue;
+          if (k === "class") node.className = v;
+          else if (k === "html") node.innerHTML = v;
+          else if (k.startsWith("on") && typeof v === "function") node.addEventListener(k.slice(2), v);
+          else if (k === "disabled") node.disabled = !!v;
+          else node.setAttribute(k, v === true ? "" : v);
+        }
+      }
+      for (const c of children) {
+        if (c == null) continue;
+        node.append(c.nodeType ? c : document.createTextNode(c));
+      }
+      return node;
+    }
+
+    function draftLine() {
+      const bits = [];
+      if (answers.department) bits.push(answers.department);
+      if (answers.tasks && answers.tasks[0] && answers.tasks[0] !== OTHER) bits.push(answers.tasks[0]);
+      else if (answers.tasks && answers.tasks[0] === OTHER && answers.tasks_other) bits.push(answers.tasks_other);
+      if (answers.weekly_hours) bits.push(answers.weekly_hours);
+      if (!bits.length) return "השער בהכנה. התשובות שלכם יהפכו לכותרות.";
+      return "שער בהכנה · " + bits.join(" · ");
+    }
+
+    function fillMasthead(head, step, qn, totalQ) {
+      const isIntro = !step || step.kind === "intro";
+      const isTheme = step && step.kind === "theme";
+      const isThanks = step && step.kind === "thanks";
+      if (isThanks) {
+        head.hidden = true;
+        head.innerHTML = "";
+        return;
+      }
+      const size = isIntro ? "lg" : "";
+      const midFolio = currentThemeId() === "closed" ? '<span class="deadline-chip">סגירה · ליל רביעי</span>' : "<span>גיליון מיוחד</span>";
+      let html = `<div class="folio"><span>${hebrewDate()}</span>${midFolio}<span>השער שלך</span></div>`;
+      html += logoSVG(size);
+      if (isIntro) html += `<div class="flag">השער שלך</div>`;
+      if (isTheme) html += `<div class="flag">בחרו סגנון</div>`;
+      html += `<hr class="double-rule">`;
+      head.hidden = false;
+      if (!isIntro && !isTheme) {
+        html += `<div class="progress-label">${qn}/${totalQ}</div><div class="progress-rail"><div class="progress-bar" style="width:${((qn-1)/totalQ)*100}%"></div></div>`;
+        html += `<div class="draft-strip"><strong>עמוד ראשי:</strong> ${escapeHtml(draftLine())}</div>`;
+      }
+      head.innerHTML = html;
+      if (!isIntro && !isTheme) head.append(styleChip());
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, ch => ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[ch]));
+    }
+
+    function weather() {
+      const s = answers.ai_skill || 3;
+      const d = answers.desire_help || 3;
+      const worried = (answers.concerns || []).some(c => c && c !== NO_CONCERN);
+      if (s >= 4 && d >= 4) return { label: "בהיר", detail: "יש ביטחון ורצון להתחיל." };
+      if (d >= 4 && worried) return { label: "ערפל בבוקר, התבהרות בצהריים", detail: "יש רצון, ויש גם חששות שכדאי לפזר בכללים ברורים." };
+      if (s <= 2 && d >= 4) return { label: "ערפל בבוקר, התבהרות בצהריים", detail: "יש רצון, וצריך הדרכה שתרגיע." };
+      if (worried && s <= 3) return { label: "מעונן, עם משב של זהירות", detail: "יש חששות שכדאי לפזר בכללים ברורים." };
+      if (s >= 3) return { label: "מעונן חלקית", detail: "יש בסיס. אפשר לבנות עליו." };
+      return { label: "מעונן", detail: "עדיין לא נכנסו לעומק." };
+    }
+
+    function topTaskLabel() {
+      if (answers.tasks && answers.tasks[0] === OTHER && (answers.tasks_other || "").trim()) return answers.tasks_other.trim();
+      if (answers.tasks && answers.tasks[0] && answers.tasks[0] !== OTHER) return answers.tasks[0];
+      return "העבודה השוטפת";
+    }
+
+    function ltrIsolate(s) {
+      return "⁦" + s + "⁩";
+    }
+    function hoursForHeadline(h) {
+      return String(h || "שעות יקרות").replace(/(\d+[–-]\d+)/g, m => ltrIsolate(m));
+    }
+    function frontHeadline() {
+      return "כך נעלמות " + hoursForHeadline(answers.weekly_hours) + " בשבוע על " + topTaskLabel();
+    }
+
+    function toolsLine() {
+      const tools = withOther(answers.ai_tools, "").filter(t => t !== NO_AI).slice(0, 3);
+      const soft = withOther(answers.software, answers.software_other).slice(0, 3);
+      const all = tools.concat(soft);
+      return all.length ? all.join(" · ") : "טרם צוינו כלים";
+    }
+
+    function renderFront(root) {
+      const w = weather();
+      const wish = (answers.future_wish || "").trim();
+      const front = el("article", { class: "front", "data-screen": "front", id: "frontPage" });
+      const mid = currentThemeId() === "closed"
+        ? el("span", { class: "deadline-chip" }, "סגירה · ליל רביעי")
+        : el("span", {}, "סקר פנימי");
+      front.append(
+        el("div", { class: "folio" }, el("span", {}, hebrewDate()), mid, el("span", {}, "השער שלך")),
+        el("div", { html: logoSVG("xl"), style: "text-align:center;margin:6px 0 2px" }),
+        el("hr", { class: "double-rule" }),
+        el("div", { class: "spot" }, "בלעדי"),
+        titled("h1", frontHeadline()),
+        el("p", { class: "deck" }, answers.department ? ("מהשטח · " + answers.department + (answers.role ? " · " + answers.role : "")) : "מהשטח"),
+        el("div", { class: "cols" },
+          el("div", { class: "col" },
+            el("h3", {}, "בארגז הכלים"),
+            el("p", {}, toolsLine())
+          ),
+          el("div", { class: "col" },
+            el("h3", {}, "תחזית ה־AI"),
+            el("div", { class: "weather-box" }, el("strong", {}, w.label), el("p", {}, w.detail))
+          ),
+          el("div", { class: "col" },
+            el("h3", {}, "בעוד חצי שנה"),
+            el("p", { class: "quote" }, wish ? "«" + wish + "»" : "לא צוין משאלה. גם זה בסדר.")
+          )
+        ),
+        el("p", { class: "internal" }, "מהדורה אישית · גם אתם יכולים: ", el("span", { class: "survey-url" }, "eladrosenfeld.github.io/besheva-survey")),
+        el("div", { class: "press-stamp" }, "נסגר לדפוס")
+      );
+      root.append(front);
+      root.append(styleChip());
+      const actions = el("div", { class: "front-actions" },
+        el("div", { class: "row" },
+          el("button", { type: "button", class: "btn primary", id: "downloadFront", onclick: downloadFront }, "הורידו את השער"),
+          el("button", { type: "button", class: "btn ghost", id: "shareFront", onclick: shareFront }, "שתפו")
+        ),
+        el("div", { class: "share-fallbacks", id: "shareFallbacks", hidden: true },
+          el("a", { class: "btn ghost", href: "https://wa.me/?text=" + encodeURIComponent(SHARE_TEXT), target: "_blank", rel: "noopener" }, "שיתוף בואטסאפ"),
+          el("button", { type: "button", class: "btn ghost", id: "copyLink", onclick: copySurveyLink }, "העתיקו קישור")
+        ),
+        el("p", { class: "privacy-note" }, "בשער מופיעות התשובות שלכם. שתפו אותו רק אם זה נוח לכם."),
+        el("p", { class: "share-status", id: "shareStatus" })
+      );
+      if (!navigator.share) {
+        actions.querySelector("#shareFallbacks").hidden = false;
+      }
+      root.append(actions);
+      if (!ENDPOINT) {
+        const det = el("details", { class: "json-box" },
+          el("summary", {}, "מצב הדגמה: התשובות לא נשמרו. להצגת ה־JSON"),
+          el("pre", { class: "json", id: "demoJson" }, JSON.stringify(demoPayload || payload(), null, 2))
+        );
+        root.append(det);
+      } else if (submitError) {
+        root.append(el("p", { class: "err" }, submitError));
+      }
+    }
+
+    const FLIP_MS = 720;
+
+    function prefersReducedMotion() {
+      return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    }
+
+    function buildScreen(step) {
+      const screen = el("div", { class: "screen", "data-screen": step.kind, "data-key": step.key || step.kind, "data-group": answers.department_group || "" });
+
+      if (step.kind === "intro") {
+        screen.append(
+          el("div", { class: "kicker" }, "מהדורה מיוחדת · סקר לעובדי בשבע"),
+          titled("h1", "מה גונב לך את הזמן?"),
+          el("p", { class: "lead" }, "לפני שבונים תוכנית הטמעת AI, אנחנו רוצים לשמוע אתכם: איפה העבודה נתקעת, באילו כלים אתם כבר משתמשים, ומה גוזל מכם הכי הרבה זמן."),
+          el("p", { class: "lead" }, "לא שואלים בעיקר איזה כלי הייתם רוצים, אלא איך נראה השבוע שלכם באמת."),
+          el("div", { class: "privacy" }, "הסקר אנונימי. לא מבקשים שם ולא מייל, ולא נשמרים מזהה, כתובת או מכשיר. התשובות ישמשו לדוח למנכ״ל ולתוכנית הטמעה. זה ייקח כחמש דקות."),
+          el("div", { class: "nav" },
+            el("button", { class: "btn primary", type: "button", onclick: () => { if (flipping) return; stepIndex = 1; render("forward"); } }, "לפתיחת הגיליון")
+          )
+        );
+      } else if (step.kind === "theme") {
+        screen.append(
+          el("div", { class: "kicker" }, "לפני שנפתח את המחברת"),
+          titled("h2", step.title),
+          el("p", { class: "hint" }, "כל סגנון הוא מהדורה אחרת של אותו גיליון. אפשר לשנות גם אחר כך, משורת הסגנון בראש העמוד."),
+          themeGrid(id => { applyTheme(id); render(); }),
+          el("div", { class: "nav" },
+            el("button", { class: "btn ghost", type: "button", onclick: back }, "חזרה"),
+            el("button", { class: "btn primary", type: "button", disabled: !isAnswered(step), onclick: next }, "המשך")
+          )
+        );
+      } else if (step.kind === "interstitial") {
+        screen.append(
+          el("p", { class: "continue-line" }, "— המשך בעמוד הבא —"),
+          titled("h2", step.text),
+          el("div", { class: "nav" },
+            el("button", { class: "btn ghost", type: "button", onclick: back }, "חזרה"),
+            el("button", { class: "btn primary", type: "button", onclick: next }, "המשך")
+          )
+        );
+      } else if (step.kind === "thanks") {
+        renderFront(screen);
+      } else if (step.kind === "department") {
+        screen.append(el("div", { class: "kicker" }, "שלב " + step.stage), titled("h2", step.title));
+        const dep = el("input", { type: "text", maxlength: "100", "aria-label": step.title, id: "deptInput", placeholder: "למשל: עריכת לשון, מערכת, סטודיו..." });
+        dep.value = answers.department;
+        dep.addEventListener("input", () => {
+          answers.department = dep.value;
+          answers.department_group = inferGroup(dep.value);
+          const btn = screen.querySelector(".btn.primary");
+          if (btn) btn.disabled = !isAnswered(step);
+        });
+        const role = el("input", { type: "text", maxlength: "80", "aria-label": "תפקיד, רשות", id: "roleInput", placeholder: "למשל: כתב, עורכת, מעצבת..." });
+        role.value = answers.role;
+        role.addEventListener("input", () => { answers.role = role.value; });
+        screen.append(
+          dep,
+          el("p", { class: "hint" }, "כתבו במילים שלכם. לא צריך לבחור מרשימה."),
+          el("label", { class: "field-label", for: "roleInput" }, "תפקיד (רשות)"),
+          role,
+          el("p", { class: "hint" }, "שדה רשות. בארגון קטן, ציון תפקיד מדויק עלול להפחית אנונימיות."),
+          el("div", { class: "nav" },
+            el("button", { class: "btn ghost", type: "button", onclick: back }, "חזרה"),
+            el("button", { class: "btn primary", type: "button", disabled: !isAnswered(step), onclick: () => { answers.department_group = inferGroup(answers.department); next(); } }, "המשך")
+          )
+        );
+      } else {
+        if (step.stage) screen.append(el("div", { class: "kicker" }, "שלב " + step.stage));
+        screen.append(titled("h2", step.title));
+        if (step.hint) screen.append(el("p", { class: "hint" }, step.hint));
+
+        if (step.kind === "scale") {
+          const row = el("div", { class: "scale", role: "radiogroup", "aria-label": step.title });
+          for (let n = 1; n <= 5; n++) {
+            row.append(el("button", {
+              type: "button",
+              "aria-pressed": answers[step.key] === n,
+              onclick: () => { answers[step.key] = n; render(); goNextSoon(); }
+            }, String(n)));
+          }
+          screen.append(row, el("div", { class: "scale-labels" }, el("span", {}, step.low), el("span", {}, step.high)));
+        } else if (step.kind === "text") {
+          const ta = el("textarea", { maxlength: String(step.max), placeholder: step.placeholder || "", "aria-label": step.title });
+          ta.value = answers[step.key] || "";
+          const counter = el("div", { class: "counter" });
+          const update = () => {
+            answers[step.key] = ta.value;
+            counter.textContent = ((step.max || 0) - ta.value.length) + " תווים נותרו";
+            const btn = screen.querySelector(".btn.primary");
+            if (btn) btn.disabled = !isAnswered(step);
+          };
+          ta.addEventListener("input", update);
+          screen.append(ta, counter);
+          update();
+        } else {
+          const list = el("div", { class: "choices", role: "group", "aria-label": step.title });
+          const opts = step.options || [];
+          const val = answers[step.key];
+          const prefMap = step.prefMap;
+          opts.forEach(opt => {
+            const value = typeof opt === "string" ? opt : opt.value;
+            const label = typeof opt === "string" ? opt : opt.label;
+            const selected = step.kind === "single" ? val === value : Array.isArray(val) && val.includes(value);
+            const pref = prefMap ? isPreferred(value, answers.department_group, prefMap) : false;
+            const btn = el("button", {
+              type: "button",
+              class: "choice" + (selected ? " selected" : "") + (pref ? " preferred" : ""),
+              "aria-pressed": selected,
+              "data-preferred": pref ? "true" : "false",
+              onclick: () => {
+                if (step.kind === "single") {
+                  setSingle(step.key, value);
+                  render();
+                  goNextSoon();
+                } else {
+                  toggleMulti(step, value);
+                }
+              }
+            });
+            if (step.kind === "ranked" && selected && Array.isArray(val)) {
+              btn.append(el("span", { class: "rank" }, String(val.indexOf(value) + 1)), " " + label);
+            } else {
+              btn.append(label);
+            }
+            list.append(btn);
+          });
+          screen.append(list);
+          if (step.otherKey && Array.isArray(val) && val.includes(OTHER)) {
+            const inp = el("input", { type: "text", class: "other-field", maxlength: "80", placeholder: "פרטו בקצרה...", "aria-label": "פירוט אחר", id: step.otherKey });
+            inp.value = answers[step.otherKey] || "";
+            inp.addEventListener("input", () => { answers[step.otherKey] = inp.value; });
+            screen.append(inp);
+          }
+        }
+
+        const needContinue = step.kind !== "single" && step.kind !== "scale";
+        const nav = el("div", { class: "nav" }, el("button", { class: "btn ghost", type: "button", onclick: back }, "חזרה"));
+        if (needContinue || step.kind === "text") {
+          nav.append(el("button", {
+            class: "btn primary", type: "button", disabled: !isAnswered(step), onclick: next
+          }, stepIndex === buildSteps().length - 2 ? "להדפסת השער" : "המשך"));
+        }
+        screen.append(nav);
+      }
+      return screen;
+    }
+
+    function buildSheet(step, qn, totalQ) {
+      const sheet = el("div", { class: "sheet" });
+      const head = el("header", { class: "masthead" });
+      fillMasthead(head, step, qn, totalQ);
+      const screen = buildScreen(step);
+      sheet.append(head, screen);
+      sheet.append(
+        el("div", { class: "sheet-curl", "aria-hidden": "true" }),
+        el("div", { class: "sheet-shadow", "aria-hidden": "true" }),
+        themeDecorations()
+      );
+      return sheet;
+    }
+
+    function currentStepMeta() {
+      const steps = buildSteps();
+      if (stepIndex < 0) stepIndex = 0;
+      if (stepIndex >= steps.length) stepIndex = steps.length - 1;
+      const step = steps[stepIndex];
+      const qs = questionSteps(steps);
+      const qn = currentQuestionNumber(steps, stepIndex);
+      return { steps, step, qn, totalQ: qs.length };
+    }
+
+    function paintInstant(sheet) {
+      const app = document.getElementById("app");
+      app.innerHTML = "";
+      app.append(sheet);
+    }
+
+    function finishFlip(outgoing, incoming) {
+      if (!flipping) return;
+      flipping = false;
+      if (flipTimer) { clearTimeout(flipTimer); flipTimer = null; }
+      if (outgoing && outgoing.parentNode) outgoing.remove();
+      incoming.classList.remove("flip-out-forward", "flip-in-back", "under", "is-flipping");
+      incoming.style.pointerEvents = "";
+    }
+
+    function flipTo(incoming, direction) {
+      const app = document.getElementById("app");
+      const outgoing = app.querySelector(".sheet");
+      if (!outgoing) {
+        paintInstant(incoming);
+        return;
+      }
+      if (prefersReducedMotion()) {
+        paintInstant(incoming);
+        incoming.classList.add("fade-in");
+        return;
+      }
+      flipping = true;
+      incoming.style.pointerEvents = "none";
+      outgoing.style.pointerEvents = "none";
+      outgoing.classList.add("is-flipping");
+      incoming.classList.add("is-flipping");
+      if (direction === "back") {
+        incoming.classList.add("flip-in-back");
+        outgoing.classList.add("under");
+        app.append(incoming);
+      } else {
+        incoming.classList.add("under");
+        app.insertBefore(incoming, outgoing);
+        outgoing.classList.add("flip-out-forward");
+      }
+      const done = () => finishFlip(outgoing, incoming);
+      flipTimer = setTimeout(done, FLIP_MS);
+      outgoing.addEventListener("animationend", ev => {
+        if (ev.target === outgoing && ev.animationName === "flipOutFwd") done();
+      }, { once: true });
+      incoming.addEventListener("animationend", ev => {
+        if (ev.target === incoming && ev.animationName === "flipInBack") done();
+      }, { once: true });
+    }
+
+    function render(direction) {
+      const { step, qn, totalQ } = currentStepMeta();
+      if (showPress) {
+        const press = el("div", { class: "press", id: "press" },
+          el("div", { html: logoSVG("lg") }),
+          el("p", {}, "הדפוס עובד"),
+          el("div", { class: "press-roll" }, el("i"))
+        );
+        document.body.appendChild(press);
+        const done = () => {
+          showPress = false;
+          press.remove();
+          render();
+        };
+        setTimeout(done, prefersReducedMotion() ? 0 : 1200);
+        return;
+      }
+      const sheet = buildSheet(step, qn, totalQ);
+      if (direction === "forward" || direction === "back") {
+        flipTo(sheet, direction);
+      } else {
+        paintInstant(sheet);
+      }
+    }
+
+    function back() {
+      clearTimeout(advanceTimer);
+      if (flipping) return;
+      if (stepIndex > 0) { stepIndex--; render("back"); }
+    }
+
+    function next() {
+      clearTimeout(advanceTimer);
+      if (flipping) return;
+      const steps = buildSteps();
+      const step = steps[stepIndex];
+      if (!isAnswered(step)) return;
+      if (stepIndex < steps.length - 1) {
+        const upcoming = steps[stepIndex + 1];
+        if (upcoming && upcoming.kind === "thanks") {
+          submitAndFinish();
+          return;
+        }
+        stepIndex++;
+        render("forward");
+      }
+    }
+
+    function payload() {
+      return {
+        department: (answers.department || "").trim().slice(0, 100),
+        department_group: answers.department_group || "",
+        role: (answers.role || "").trim().slice(0, 80),
+        load_days: answers.load_days.slice(),
+        ai_tools: withOther(answers.ai_tools, ""),
+        ai_frequency: answers.ai_frequency,
+        ai_skill: answers.ai_skill,
+        software: withOther(answers.software, answers.software_other),
+        tasks: withOther(answers.tasks, answers.tasks_other),
+        weekly_hours: answers.weekly_hours,
+        bottleneck: answers.bottleneck,
+        diagnostic: (answers.diagnostic || "").trim().slice(0, 200),
+        eliminate_task: (answers.eliminate_task || "").trim().slice(0, 200),
+        desire_help: answers.desire_help,
+        concerns: answers.concerns.slice(),
+        safety_help: answers.safety_help,
+        future_wish: (answers.future_wish || "").trim().slice(0, 250),
+        style: answers.style || currentTheme().name
+      };
+    }
+
+    async function submitAndFinish() {
+      if (submitting || flipping) return;
+      submitting = true;
+      const data = payload();
+      demoPayload = data;
+      if (ENDPOINT) {
+        try {
+          await fetch(ENDPOINT, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(data)
+          });
+          submitError = "";
+        } catch (err) {
+          submitError = "השליחה לא הצליחה. נסו שוב או פנו למוביל הסקר.";
+        }
+      }
+      stepIndex = buildSteps().length - 1;
+      submitting = false;
+      showPress = true;
+      render();
+    }
+
+    window.__survey = { inferGroup, orderOptions, isPreferred, answers, payload, buildSteps, SOFTWARE, TASKS, SOFT_PREF, TASK_PREF, OTHER, FLIP_MS, next, back, render, THEMES, applyTheme, renderFrontCanvas, buildFrontFile, downloadFront, shareFront, currentTheme, get flipping() { return flipping; }, get stepIndex() { return stepIndex; }, set stepIndex(v) { stepIndex = v; } };
+    applyTheme(answers.styleId || "classic");
+    render();
+  </script>
+</body>
+</html>
