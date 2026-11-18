@@ -284,14 +284,25 @@
       letter-spacing: 0.08em;
       margin: 6px 0 4px;
     }
-    h1, h2 {
-      font-family: var(--serif);
-      font-weight: 700;
+    h1, h2, h3 {
+      font-family: var(--font);
+      font-weight: 800;
       line-height: 1.2;
       margin: 0 0 12px;
     }
+    html[data-theme] h1, html[data-theme] h2, html[data-theme] h3 {
+      font-family: var(--font);
+      font-weight: 800;
+    }
     h1 { font-size: 2.25rem; }
     h2 { font-size: 1.55rem; }
+    h2.thief-headline {
+      font-size: 2.2rem;
+      font-weight: 800;
+      text-align: center;
+      line-height: 1.25;
+      margin: 10px 0 12px;
+    }
     .lead, .deck { font-size: 1.05rem; margin: 0 0 12px; }
     .hint, .fine { color: var(--ink-soft); font-size: 0.9rem; margin: 0 0 14px; }
     .privacy {
@@ -394,7 +405,7 @@
       border-top: 1px solid var(--rule);
       padding: 8px 0;
     }
-    .col h3 { font-family: var(--serif); font-size: 1.02rem; margin: 0 0 4px; }
+    .col h3 { font-family: var(--font); font-weight: 800; font-size: 1.02rem; margin: 0 0 4px; }
     .col p { margin: 0; font-size: 0.92rem; }
     .weather-box {
       border: 1.5px solid var(--rule);
@@ -485,6 +496,13 @@
       font-size: 1.18rem;
       margin: 0 0 6px;
     }
+    .screen[data-screen="interstitial"] h2.thief-headline {
+      font-size: 2.2rem;
+      font-weight: 800;
+      text-align: center;
+      line-height: 1.25;
+      margin: 10px 0 12px;
+    }
     .screen:not([data-screen="intro"]):not([data-screen="thanks"]) .kicker {
       margin: 2px 0 2px;
       font-size: 11px;
@@ -527,6 +545,7 @@
       .logo-besheva.lg { height: 46px; }
       .logo-besheva.xl { height: 56px; }
       .screen:not([data-screen="intro"]):not([data-screen="thanks"]) h2 { font-size: 1.05rem; }
+      .screen[data-screen="interstitial"] h2.thief-headline { font-size: 1.85rem; }
       .draft-strip { -webkit-line-clamp: 1; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; padding: 2px 8px; margin: 0 0 4px; }
       .sheet { padding-top: 8px; padding-bottom: 10px; }
       .front-preview { max-height: 62vh; }
@@ -649,7 +668,9 @@
     }
     .logo-besheva { color: var(--logo); }
     body::before { opacity: var(--grain-opacity); mix-blend-mode: var(--grain-blend); }
-    html[data-theme="holiday"] h1, html[data-theme="holiday"] h2, html[data-theme="holiday"] .front h1 {
+    html[data-theme="holiday"] h1, html[data-theme="holiday"] h2, html[data-theme="holiday"] h3, html[data-theme="holiday"] .front h1 {
+      font-family: var(--font);
+      font-weight: 800;
       letter-spacing: -0.02em;
     }
     html[data-theme="holiday"] h1 { font-size: 2.4rem; }
@@ -2096,7 +2117,7 @@
         const bits = [el("p", { class: "continue-line" }, "— המשך בעמוד הבא —")];
         if (step.art === "thief") bits.push(thiefIllustration());
         bits.push(
-          titled("h2", step.text),
+          titled("h2", step.text, step.art === "thief" ? { class: "thief-headline" } : undefined),
           el("div", { class: "nav" },
             el("button", { class: "btn ghost", type: "button", onclick: back }, "חזרה"),
             el("button", { class: "btn primary", type: "button", onclick: next }, "המשך")
