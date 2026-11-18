@@ -504,7 +504,7 @@
     .scale button { min-height: 44px; }
     .front-preview-wrap {
       flex: 1 1 auto;
-      min-height: 0;
+      min-height: 200px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1559,26 +1559,108 @@
     }
 
     let preparedFront = null;
+    let preparedFrontPending = null;
+    let frontGen = 0;
 
     function invalidateFrontMedia() {
+      frontGen++;
       if (preparedFront && preparedFront.url) {
-        try { URL.revokeObjectURL(preparedFront.url); } catch (e) {}
+        const oldUrl = preparedFront.url;
+        setTimeout(() => { try { URL.revokeObjectURL(oldUrl); } catch (e) {} }, 5000);
       }
       preparedFront = null;
+      preparedFrontPending = null;
+    }
+
+    function blobToDataUrl(blob) {
+      return new Promise((resolve, reject) => {
+        const fr = new FileReader();
+        fr.onload = () => resolve(fr.result);
+        fr.onerror = () => reject(fr.error || new Error("FileReader failed"));
+        fr.readAsDataURL(blob);
+      });
+    }
+
+    function previewSrc(media) {
+      return (media && (media.dataUrl || media.url)) || "";
+    }
+
+    function applyPreviewTo(img, media) {
+      if (!img || !media) return;
+      const src = previewSrc(media);
+      if (!src) return;
+      img.alt = "השער שלך";
+      if (img.getAttribute("src") !== src) img.src = src;
     }
 
     async function ensureFrontPrepared() {
-      if (preparedFront && preparedFront.file) return preparedFront;
-      const built = await buildFrontFile();
-      if (preparedFront && preparedFront.url) {
-        try { URL.revokeObjectURL(preparedFront.url); } catch (e) {}
+      if (preparedFront && preparedFront.file && preparedFront.dataUrl) return preparedFront;
+      if (!preparedFrontPending) {
+        const gen = frontGen;
+        preparedFrontPending = (async () => {
+          try {
+            const built = await buildFrontFile();
+            if (gen !== frontGen) return null;
+            const dataUrl = await blobToDataUrl(built.blob);
+            if (gen !== frontGen) return null;
+            preparedFront = {
+              file: built.file,
+              blob: built.blob,
+              url: URL.createObjectURL(built.blob),
+              dataUrl
+            };
+            return preparedFront;
+          } finally {
+            preparedFrontPending = null;
+          }
+        })();
       }
-      preparedFront = {
-        file: built.file,
-        blob: built.blob,
-        url: URL.createObjectURL(built.blob)
+      const result = await preparedFrontPending;
+      if (result) return result;
+      return ensureFrontPrepared();
+    }
+
+    function bindFrontPreview(img) {
+      if (!img) return;
+      const loadOrRebuild = () => {
+        ensureFrontPrepared()
+          .then(media => applyPreviewTo(img, media))
+          .catch(() => setShareStatus("לא ניתן היה להכין את השער."));
       };
-      return preparedFront;
+      img.addEventListener("error", () => {
+        if (img.dataset.retry === "1") {
+          setShareStatus("לא ניתן היה להציג את השער. אפשר להוריד אותו.");
+          return;
+        }
+        img.dataset.retry = "1";
+        invalidateFrontMedia();
+        loadOrRebuild();
+      });
+      if (preparedFront && previewSrc(preparedFront)) applyPreviewTo(img, preparedFront);
+      else {
+        img.alt = "מכינים את השער…";
+        loadOrRebuild();
+      }
+      const checkVisible = () => {
+        if (!img.isConnected) return;
+        if (img.complete && img.naturalWidth > 0) return;
+        if (previewSrc(preparedFront)) applyPreviewTo(img, preparedFront);
+        else loadOrRebuild();
+      };
+      requestAnimationFrame(() => requestAnimationFrame(checkVisible));
+      setTimeout(checkVisible, 400);
+    }
+
+    function refreshFrontPreview() {
+      const img = document.getElementById("frontPreview");
+      if (!img) return;
+      if (img.complete && img.naturalWidth > 0) return;
+      if (previewSrc(preparedFront)) applyPreviewTo(img, preparedFront);
+      else {
+        ensureFrontPrepared()
+          .then(media => applyPreviewTo(img, media))
+          .catch(() => setShareStatus("לא ניתן היה להכין את השער."));
+      }
     }
 
     function triggerPngDownload(blob) {
@@ -1908,18 +1990,10 @@
 
     function renderFront(root) {
       const previewWrap = el("div", { class: "front-preview-wrap" });
-      const img = el("img", { class: "front-preview", alt: "השער שלך", id: "frontPreview" });
+      const img = el("img", { class: "front-preview", alt: "מכינים את השער…", id: "frontPreview" });
       previewWrap.append(img);
-      const attachPreview = media => {
-        const node = document.getElementById("frontPreview");
-        if (node && media && media.url) node.src = media.url;
-      };
-      if (preparedFront && preparedFront.url) attachPreview(preparedFront);
-      else {
-        img.alt = "מכינים את השער…";
-        ensureFrontPrepared().then(attachPreview).catch(() => setShareStatus("לא ניתן היה להכין את השער."));
-      }
       root.append(previewWrap);
+      bindFrontPreview(img);
       const actions = el("div", { class: "front-actions" },
         el("div", { class: "row" },
           el("button", { type: "button", class: "btn primary", id: "downloadFront", onclick: downloadFront }, "הורידו את השער"),
@@ -1972,16 +2046,19 @@
             <ellipse cx="116" cy="166" rx="11" ry="6" fill="#1A140C"/>
           </g>
           <path d="M118 98 Q138 108 152 118" fill="none" stroke="#F3D2B3" stroke-width="7" stroke-linecap="round"/>
-          <circle cx="108" cy="64" r="22" fill="#F3D2B3"/>
-          <ellipse cx="86" cy="68" rx="4" ry="5" fill="#F3D2B3"/>
-          <path d="M88 62 Q108 34 132 60 L130 68 Q108 52 90 68Z" fill="#002F66"/>
-          <ellipse cx="110" cy="62" rx="24" ry="6.5" fill="#00244f"/>
-          <path d="M90 70 Q108 62 128 70 Q131 80 124 82 Q108 74 94 82 Q87 80 90 70Z" fill="#1A140C"/>
-          <ellipse cx="101" cy="74" rx="3.3" ry="2.3" fill="#fff"/>
-          <ellipse cx="117" cy="74" rx="3.3" ry="2.3" fill="#fff"/>
-          <circle cx="101.6" cy="74.2" r="1.3" fill="#002F66"/>
-          <circle cx="117.6" cy="74.2" r="1.3" fill="#002F66"/>
-          <path d="M102 87 Q108 92 115 87" fill="none" stroke="#1A140C" stroke-width="1.5" stroke-linecap="round"/>
+          <g class="thief-head">
+            <ellipse cx="96" cy="80" rx="4.5" ry="6" fill="#E8C4A0"/>
+            <rect x="106" y="90" width="16" height="14" rx="5" fill="#F3D2B3"/>
+            <circle cx="114" cy="76" r="19" fill="#F3D2B3"/>
+            <path fill="#002F66" d="M96 70 C98 55 108 53 114 53 C120 53 130 55 132 70 Q114 67 96 70Z"/>
+            <path fill="#00244f" d="M112 68 Q130 65 148 73 Q132 79 114 73 Q112 71 112 68Z"/>
+            <rect x="96" y="71" width="36" height="13" rx="6.5" fill="#1A140C"/>
+            <ellipse cx="107" cy="77.5" rx="4.2" ry="3.3" fill="#fff"/>
+            <ellipse cx="122" cy="77.5" rx="4.2" ry="3.3" fill="#fff"/>
+            <circle cx="108" cy="77.8" r="1.5" fill="#002F66"/>
+            <circle cx="123" cy="77.8" r="1.5" fill="#002F66"/>
+            <path d="M108 91 Q114 95 120 91" fill="none" stroke="#1A140C" stroke-width="1.5" stroke-linecap="round"/>
+          </g>
           <g class="thief-clock">
             <circle cx="161" cy="117" r="24" fill="#f7f9fc" stroke="#002F66" stroke-width="3.2"/>
             <circle cx="161" cy="117" r="20.5" fill="none" stroke="#002F66" stroke-width="0.6" opacity="0.35"/>
@@ -2176,6 +2253,7 @@
       const app = document.getElementById("app");
       app.innerHTML = "";
       app.append(sheet);
+      refreshFrontPreview();
     }
 
     function finishFlip(outgoing, incoming) {
@@ -2185,6 +2263,7 @@
       if (outgoing && outgoing.parentNode) outgoing.remove();
       incoming.classList.remove("flip-out-forward", "flip-in-back", "under", "is-flipping");
       incoming.style.pointerEvents = "";
+      refreshFrontPreview();
     }
 
     function flipTo(incoming, direction) {
