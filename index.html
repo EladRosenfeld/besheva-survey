@@ -304,6 +304,8 @@
       margin: 10px 0 12px;
     }
     .lead, .deck { font-size: 1.05rem; margin: 0 0 12px; }
+    .screen[data-screen="intro"] .lead { margin: 0 0 8px; }
+    .screen[data-screen="intro"] .lead.greet { font-weight: 600; }
     .hint, .fine { color: var(--ink-soft); font-size: 0.9rem; margin: 0 0 14px; }
     .privacy {
       border-top: 1px solid var(--rule);
@@ -361,6 +363,7 @@
     input[type="text"]:focus, textarea:focus { box-shadow: inset 0 0 0 2px var(--navy); }
     .counter { text-align: left; color: var(--ink-soft); font-size: 0.8rem; margin: 6px 0 14px; }
     .field-label { display: block; font-weight: 700; margin: 10px 0 6px; }
+    #nameInput { margin-bottom: 10px; }
     .nav { display: flex; gap: 10px; margin-top: auto; padding-top: 8px; flex-shrink: 0; }
     .btn {
       appearance: none; border: 0; border-radius: 2px;
@@ -540,8 +543,9 @@
     }
     .choices.choices-dense { gap: 5px; }
     @media (max-height: 700px) {
-      .intro-kicker { font-size: 1.15rem; }
-      html[data-theme] h1.intro-headline { font-size: 1.85rem; }
+      .intro-kicker { font-size: 1.15rem; margin: 4px 0 6px; }
+      html[data-theme] h1.intro-headline { font-size: 1.85rem; margin-bottom: 8px; }
+      .screen[data-screen="intro"] .lead { font-size: 0.95rem; margin: 0 0 6px; }
       .logo-besheva.lg { height: 56px; }
       .logo-besheva.xl { height: 68px; }
       .screen:not([data-screen="intro"]):not([data-screen="thanks"]) h2 { font-size: 1.05rem; }
@@ -1027,6 +1031,7 @@
     const SAFETY = ["כללים ברורים: מה מותר ומה לא","ליווי והדרכה על חומרים אמיתיים של בשבע","שהעורך או המנהל מאשרים לפני שזה נכנס לגיליון","דוגמאות ותבניות מוכנות למחלקה שלי","זמן מוגן להתנסות, בלי לחץ של סגירה",OTHER];
 
     const answers = {
+      name: "",
       department: "",
       department_group: "",
       role: "",
@@ -2114,9 +2119,11 @@
         screen.append(
           el("div", { class: "intro-kicker" }, "מהדורה מיוחדת · סקר לעובדי בשבע"),
           titled("h1", "מה גונב לך את הזמן?", { class: "intro-headline" }),
-          el("p", { class: "lead" }, "לפני שבונים תוכנית הטמעת AI, אנחנו רוצים לשמוע אתכם: איפה העבודה נתקעת, באילו כלים אתם כבר משתמשים, ומה גוזל מכם הכי הרבה זמן."),
-          el("p", { class: "lead" }, "אנחנו רוצים לדעת איך נראה השבוע שלכם."),
-          el("div", { class: "privacy" }, "הסקר אנונימי"),
+          el("p", { class: "lead greet" }, "שלום לכם חברות וחברי משפחת בשבע,"),
+          el("p", { class: "lead" }, "שנת 2027 תוגדר בקבוצת בשבע כשנת ההטמעה והיישום של ה‑AI בכל מחלקות המשרד."),
+          el("p", { class: "lead" }, "לשם כך יצרנו עבורכם סקר בשיתוף היועצים שיעסקו בהטמעת ה‑AI בקבוצת בשבע לאורך השנה הבאה."),
+          el("p", { class: "lead" }, "נבקש מכם לענות על השאלון הקצר עד יום שישי הקרוב בשעה 12:00, כדי שנוכל לנתח את התוצאות לבניית תכנית מתאימה."),
+          el("p", { class: "lead" }, "תודה לכם על שיתוף הפעולה."),
           el("div", { class: "nav" },
             el("button", { class: "btn primary", type: "button", onclick: () => { if (flipping) return; stepIndex = 1; render("forward"); } }, "לפתיחת הגיליון")
           )
@@ -2136,6 +2143,9 @@
         renderFront(screen);
       } else if (step.kind === "department") {
         screen.append(el("div", { class: "kicker" }, "שלב " + step.stage), titled("h2", step.title));
+        const name = el("input", { type: "text", maxlength: "80", "aria-label": "שם", id: "nameInput", placeholder: "שם מלא", autocomplete: "name" });
+        name.value = answers.name;
+        name.addEventListener("input", () => { answers.name = name.value; });
         const dep = el("input", { type: "text", maxlength: "100", "aria-label": step.title, id: "deptInput", placeholder: "למשל: עריכת לשון, מערכת, סטודיו..." });
         dep.value = answers.department;
         dep.addEventListener("input", () => {
@@ -2148,6 +2158,8 @@
         role.value = answers.role;
         role.addEventListener("input", () => { answers.role = role.value; });
         screen.append(
+          el("label", { class: "field-label", for: "nameInput" }, "שם"),
+          name,
           dep,
           el("p", { class: "hint" }, "כתבו במילים שלכם. לא צריך לבחור מרשימה."),
           el("label", { class: "field-label", for: "roleInput" }, "תפקיד (רשות)"),
@@ -2382,6 +2394,7 @@
 
     function payload() {
       return {
+        name: (answers.name || "").trim().slice(0, 80),
         department: (answers.department || "").trim().slice(0, 100),
         department_group: answers.department_group || "",
         role: (answers.role || "").trim().slice(0, 80),
